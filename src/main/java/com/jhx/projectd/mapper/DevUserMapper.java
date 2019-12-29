@@ -44,5 +44,5 @@ public interface DevUserMapper {
      */
     int updateByPrimaryKey(DevUser record);
 
-    List<DevUser> selectByNameAndPassword(String name, String password);
+    List<DevUser> selectByDevCodeAndPassword(String devCode, String password);
 }

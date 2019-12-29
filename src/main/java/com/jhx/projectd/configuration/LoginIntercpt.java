@@ -14,7 +14,7 @@ public class LoginIntercpt implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("in preHandle");
         HttpSession session=request.getSession();
-        if (session.getAttribute("id")==null){
+        if (session.getAttribute("devId")==null){
             System.out.println("false null");
             response.sendRedirect("/");
             return false;

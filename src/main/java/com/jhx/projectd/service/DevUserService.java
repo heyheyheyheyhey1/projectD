@@ -37,15 +37,17 @@ public class DevUserService implements DevUserMapper {
     }
 
     @Override
-    public List<DevUser> selectByNameAndPassword(String name, String password) {
-        return devUserMapper.selectByNameAndPassword(name,password);
+    public List<DevUser> selectByDevCodeAndPassword(String devCode, String password) {
+        return devUserMapper.selectByDevCodeAndPassword(devCode,password);
     }
 
+
+
     public DevUser selectByIdFromSession(HttpSession session){
-        if (session.getAttribute("id")==null) {
+        if (session.getAttribute("devId")==null) {
             System.out.println("session没找到Id");
             return null;
         }
-        return this.selectByPrimaryKey((Integer) session.getAttribute("id"));
+        return this.selectByPrimaryKey((Integer) session.getAttribute("devId"));
     }
 }

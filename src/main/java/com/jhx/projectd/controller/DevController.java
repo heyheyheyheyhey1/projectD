@@ -26,11 +26,11 @@ public class DevController {
     }
 
     @PostMapping("dologin")
-    public String doLogin(Model model, @RequestParam("devCode")String name, @RequestParam("devPassword") String password, HttpServletRequest request){
-        System.out.println(name+password);
-        List<DevUser> list = devUserService.selectByNameAndPassword(name,password);
+    public String doLogin(Model model, @RequestParam("devCode")String devCode, @RequestParam("devPassword") String password, HttpServletRequest request){
+        System.out.println(devCode+password);
+        List<DevUser> list = devUserService.selectByDevCodeAndPassword(devCode,password);
         if (list.size()==1){
-            request.getSession().setAttribute("id",list.get(0).getId());
+            request.getSession().setAttribute("devId",list.get(0).getId());
             return "redirect:flatform/app/main";
         }
         else {
