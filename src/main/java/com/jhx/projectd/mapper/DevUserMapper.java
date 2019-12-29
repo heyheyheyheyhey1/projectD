@@ -43,4 +43,6 @@ public interface DevUserMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(DevUser record);
+
+    List<DevUser> selectByNameAndPassword(String name, String password);
 }

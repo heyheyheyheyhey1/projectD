@@ -5,10 +5,10 @@ import com.jhx.projectd.mapper.DevUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 @Service
 public class DevUserService implements DevUserMapper {
-
     @Autowired
     private DevUserMapper devUserMapper;
     @Override
@@ -23,16 +23,29 @@ public class DevUserService implements DevUserMapper {
 
     @Override
     public DevUser selectByPrimaryKey(Integer id) {
-        return null;
+        return devUserMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public List<DevUser> selectAll() {
-        return devUserMapper.selectAll();
+        return null;
     }
 
     @Override
     public int updateByPrimaryKey(DevUser record) {
         return 0;
+    }
+
+    @Override
+    public List<DevUser> selectByNameAndPassword(String name, String password) {
+        return devUserMapper.selectByNameAndPassword(name,password);
+    }
+
+    public DevUser selectByIdFromSession(HttpSession session){
+        if (session.getAttribute("id")==null) {
+            System.out.println("session没找到Id");
+            return null;
+        }
+        return this.selectByPrimaryKey((Integer) session.getAttribute("id"));
     }
 }
