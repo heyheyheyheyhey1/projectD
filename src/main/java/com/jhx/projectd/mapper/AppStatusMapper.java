@@ -43,4 +43,6 @@ public interface AppStatusMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(AppStatus record);
+    List<AppStatus> selectByTypeCode(int code);
+
 }

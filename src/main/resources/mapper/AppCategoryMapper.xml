@@ -64,4 +64,13 @@
     select id, categoryName, create_time, update_time, categoryCode, parentId
     from app_category
   </select>
+
+  <select id="selectByLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select *
+    from app_category where categoryLevel = #{level}
+  </select>
+  <select id="selectByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select *
+    from app_category where parentId = #{pid}
+  </select>
 </mapper>

@@ -43,4 +43,8 @@ public interface AppCategoryMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(AppCategory record);
+
+
+    List<AppCategory> selectByLevel(int level);
+    List<AppCategory> selectByParentId(int pid);
 }

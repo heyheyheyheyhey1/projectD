@@ -1,14 +1,14 @@
 package com.jhx.projectd.controller;
 
+import com.jhx.projectd.entity.AppCategory;
 import com.jhx.projectd.entity.DevUser;
+import com.jhx.projectd.service.AppCategoryService;
+import com.jhx.projectd.service.AppStatusService;
 import com.jhx.projectd.service.DevUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +20,11 @@ import java.util.List;
 public class DevController {
     @Autowired
     DevUserService devUserService;
+    @Autowired
+    AppStatusService appStatusService;
+    @Autowired
+    AppCategoryService appCategoryService;
+
     @GetMapping("login")
     public String devLogin(){
         return "devlogin";
@@ -53,10 +58,21 @@ public class DevController {
 
     @GetMapping("flatform/app/list")
     public String devAppList(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
         if (devUser==null) return "/";
         model.addAttribute("devUserSession",devUser);
+        model.addAttribute("statusList",appStatusService.selectByTypeCode(1));
+        model.addAttribute("flatFormList",appStatusService.selectByTypeCode(2));
+        model.addAttribute("categoryLevel1List",appCategoryService.selectByLevel(1));
         return "developer/appinfolist";
+    }
+    @ResponseBody
+    @GetMapping("flatform/app/categorylevellist.json")
+    public List<AppCategory>  catgrlevellist(@RequestParam("pid")Integer pid,HttpServletResponse response){
+        if (pid!=null){
+            return appCategoryService.selectByParentId(pid);
+        }
+        response.setStatus(404);
+        return  null;
     }
 }
