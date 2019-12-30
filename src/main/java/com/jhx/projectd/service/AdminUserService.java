@@ -41,4 +41,9 @@ public class AdminUserService implements AdminUserMapper {
     public List<AdminUser> selectByAdminUserAndPassword(String userCode, String userPassword) {
         return adminUserMapper.selectByAdminUserAndPassword(userCode,userPassword);
     }
+
+    @Override
+    public List<AdminUser> selectByAdminId(int AdminId) {
+        return adminUserMapper.selectByAdminId(AdminId);
+    }
 }

@@ -40,4 +40,10 @@ public class AppStatusService implements AppStatusMapper {
     public List<AppStatus> selectByTypeCode(int code) {
         return appStatusMapper.selectByTypeCode(code);
     }
+
+    @Override
+    public List<AppStatus> selectByValue2(int valueId) {
+        return appStatusMapper.selectByValue2(valueId);
+    }
+
 }

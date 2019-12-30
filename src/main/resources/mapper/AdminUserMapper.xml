@@ -74,4 +74,8 @@
     select * from admin_user
     where userCode='${userCode}' and userPassword='${userPassword}'
   </select>
+  <select id="selectByAdminId" resultMap="BaseResultMap">
+    select userName from admin_user
+    where id=${AdminId}
+  </select>
 </mapper>

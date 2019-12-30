@@ -44,5 +44,6 @@ public interface AppStatusMapper {
      */
     int updateByPrimaryKey(AppStatus record);
     List<AppStatus> selectByTypeCode(int code);
+    List<AppStatus> selectByValue2(int valueId);
 
 }

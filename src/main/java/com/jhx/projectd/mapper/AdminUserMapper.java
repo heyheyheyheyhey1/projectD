@@ -45,4 +45,5 @@ public interface AdminUserMapper {
     int updateByPrimaryKey(AdminUser record);
 
     List<AdminUser> selectByAdminUserAndPassword(String userCode,String userPassword);
+    List<AdminUser> selectByAdminId(int AdminId);
 }
