@@ -8,6 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class LoginConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginIntercpt()).addPathPatterns("/dev/flatform/**");
+        registry.addInterceptor(new LoginIntercpt()).addPathPatterns("/dev/flatform/**").addPathPatterns("/manage/backend/**");
     }
 }

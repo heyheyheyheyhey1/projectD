@@ -43,4 +43,6 @@ public interface AdminUserMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(AdminUser record);
+
+    List<AdminUser> selectByAdminUserAndPassword(String userCode,String userPassword);
 }
