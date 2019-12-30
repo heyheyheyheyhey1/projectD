@@ -1,6 +1,9 @@
 package com.jhx.projectd.mapper;
 
 import com.jhx.projectd.entity.AppInfo;
+import com.jhx.projectd.utils.AppListColumn;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface AppInfoMapper {
@@ -43,4 +46,7 @@ public interface AppInfoMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(AppInfo record);
+    List<AppListColumn> selectByParams(@Param("params") Object params);
+
+
 }

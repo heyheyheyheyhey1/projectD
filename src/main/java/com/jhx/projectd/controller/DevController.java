@@ -3,8 +3,11 @@ package com.jhx.projectd.controller;
 import com.jhx.projectd.entity.AppCategory;
 import com.jhx.projectd.entity.DevUser;
 import com.jhx.projectd.service.AppCategoryService;
+import com.jhx.projectd.service.AppInfoService;
 import com.jhx.projectd.service.AppStatusService;
 import com.jhx.projectd.service.DevUserService;
+import com.jhx.projectd.utils.AppListColumn;
+import com.jhx.projectd.utils.AppListPageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,9 @@ public class DevController {
     AppStatusService appStatusService;
     @Autowired
     AppCategoryService appCategoryService;
+    @Autowired
+    AppInfoService appInfoService;
+
 
     @GetMapping("login")
     public String devLogin(){
@@ -64,6 +70,30 @@ public class DevController {
         model.addAttribute("statusList",appStatusService.selectByTypeCode(1));
         model.addAttribute("flatFormList",appStatusService.selectByTypeCode(2));
         model.addAttribute("categoryLevel1List",appCategoryService.selectByLevel(1));
+        return "developer/appinfolist";
+    }
+    @PostMapping("flatform/app/list")
+    public String getAappList(Model model, @ModelAttribute AppListPageInfo pageInfo,HttpServletRequest request) {
+        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
+
+        System.out.println(pageInfo.toString());
+        if (devUser==null) return "redirect:/";
+        pageInfo.setDevId(devUser.getId());
+        model.addAttribute("devUserSession",devUser);
+        model.addAttribute("statusList",appStatusService.selectByTypeCode(1));
+        model.addAttribute("flatFormList",appStatusService.selectByTypeCode(2));
+        model.addAttribute("categoryLevel1List",appCategoryService.selectByLevel(1));
+        model.addAttribute("categoryLevel2List",appCategoryService.selectByParentId(pageInfo.getQueryCategoryLevel2Id()==null?2:pageInfo.getQueryCategoryLevel1Id()));
+        model.addAttribute("categoryLevel3List",appCategoryService.selectByParentId(pageInfo.getQueryCategoryLevel3Id()==null?3:pageInfo.getQueryCategoryLevel2Id()));
+
+        List<AppListColumn> list=appInfoService.selectByParams(pageInfo);
+        if (list.size()!=0){
+            System.out.println(list.size());
+        }
+
+        model.addAttribute("appInfoList",list);
+        model.addAttribute("pageInfo",pageInfo);
+
         return "developer/appinfolist";
     }
     @ResponseBody

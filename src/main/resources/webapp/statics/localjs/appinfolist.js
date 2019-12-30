@@ -1,4 +1,5 @@
 console.log("appinfolist.js")
+alert("asdasdasd")
 $("#queryCategoryLevel1").change(function(){
 	var queryCategoryLevel1 = $("#queryCategoryLevel1").val();
 	if(queryCategoryLevel1 != '' && queryCategoryLevel1 != null){

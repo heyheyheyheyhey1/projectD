@@ -70,6 +70,7 @@
     select id, devName, devPassword, devEmail, create_time, update_time, devCode, devInfo
     from dev_user
   </select>
+
   <select id="selectByDevCodeAndPassword" resultMap="BaseResultMap">
     select * from dev_user where devCode = '${devCode}' and devPassword = '${password}'
   </select>

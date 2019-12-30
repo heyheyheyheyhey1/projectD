@@ -20,7 +20,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">软件名称</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<input name="querySoftwareName" type="text" class="form-control col-md-7 col-xs-12" value="${querySoftwareName }">
+								<input name="querySoftwareName" type="text" class="form-control col-md-7 col-xs-12" value="${pageInfo.querySoftwareName }">
 							</div>
 						</div>
 					</li>
@@ -29,12 +29,12 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">APP状态</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<select name="query " class="form-control">
+								<select name="queryStatusId" class="form-control">
 									<c:if test="${statusList != null }">
 									   <option value="">--请选择--</option>
 									   <c:forEach var="dataDictionary" items="${statusList}">
-									   		<option <c:if test="${dataDictionary.valueId == queryStatus }">selected="selected"</c:if>
-									   		value="${dataDictionary.valueId}">${dataDictionary.valueName}</option>
+									   		<option <c:if test="${dataDictionary.id == pageInfo.queryStatusId }">selected="selected"</c:if>
+									   		value="${dataDictionary.id}">${dataDictionary.valueName}</option>
 									   </c:forEach>
 									</c:if>
         						</select>
@@ -49,8 +49,8 @@
 									<c:if test="${flatFormList != null }">
 									   <option value="">--请选择--</option>
 									   <c:forEach var="dataDictionary" items="${flatFormList}">
-									   		<option <c:if test="${dataDictionary.valueId == queryFlatformId }">selected="selected"</c:if>
-									   		value="${dataDictionary.valueId}">${dataDictionary.valueName}</option>
+									   		<option <c:if test="${dataDictionary.id== pageInfo.queryFlatformId }">selected="selected"</c:if>
+									   		value="${dataDictionary.id}">${dataDictionary.valueName}</option>
 									   </c:forEach>
 									</c:if>
         						</select>
@@ -61,11 +61,11 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">一级分类</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<select id="queryCategoryLevel1" name="queryCategoryLevel1" class="form-control">
+								<select id="queryCategoryLevel1" name="queryCategoryLevel1Id" class="form-control">
 									<c:if test="${categoryLevel1List != null }">
 									   <option value="">--请选择--</option>
 									   <c:forEach var="appCategory" items="${categoryLevel1List}">
-									   		<option <c:if test="${appCategory.id == queryCategoryLevel1 }">selected="selected"</c:if>
+									   		<option <c:if test="${appCategory.id == pageInfo.queryCategoryLevel1Id }">selected="selected"</c:if>
 									   		value="${appCategory.id}">${appCategory.categoryName}</option>
 									   </c:forEach>
 									</c:if>
@@ -78,11 +78,11 @@
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">二级分类</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 							<input type="hidden" name="categorylevel2list" id="categorylevel2list"/>
-        						<select name="queryCategoryLevel2" id="queryCategoryLevel2" class="form-control">
+        						<select name="queryCategoryLevel2Id" id="queryCategoryLevel2" class="form-control">
         							<c:if test="${categoryLevel2List != null }">
 									   <option value="">--请选择--</option>
 									   <c:forEach var="appCategory" items="${categoryLevel2List}">
-									   		<option <c:if test="${appCategory.id == queryCategoryLevel2 }">selected="selected"</c:if>
+									   		<option <c:if test="${appCategory.id == pageInfo.queryCategoryLevel2Id }">selected="selected"</c:if>
 									   		value="${appCategory.id}">${appCategory.categoryName}</option>
 									   </c:forEach>
 									</c:if>
@@ -94,11 +94,11 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">三级分类</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-        						<select name="queryCategoryLevel3" id="queryCategoryLevel3" class="form-control">
+        						<select name="queryCategoryLevel3Id" id="queryCategoryLevel3" class="form-control">
         							<c:if test="${categoryLevel3List != null }">
 									   <option value="">--请选择--</option>
 									   <c:forEach var="appCategory" items="${categoryLevel3List}">
-									   		<option <c:if test="${appCategory.id == queryCategoryLevel3 }">selected="selected"</c:if>
+									   		<option <c:if test="${appCategory.id == pageInfo.queryCategoryLevel3Id }">selected="selected"</c:if>
 									   		value="${appCategory.id}">${appCategory.categoryName}</option>
 									   </c:forEach>
 									</c:if>
@@ -106,7 +106,7 @@
 							</div>
 						</div>
 					</li>
-					<li><button type="submit" class="btn btn-primary"> 查 &nbsp;&nbsp;&nbsp;&nbsp;询 </button></li>
+					<li><button type="submit" class="btn btn-primary"> 查询 </button></li>
 				</ul>
 			</form>
 		</div>
@@ -187,10 +187,10 @@
                       <ul class="dropdown-menu" role="menu">
                         <li>
                         	<c:choose>
-											<c:when test="${appInfo.status == 2 || appInfo.status == 5}">
+											<c:when test="${appInfo.status == 3}">
 												<a class="saleSwichOpen" saleSwitch="open" appinfoid=${appInfo.id }  appsoftwarename=${appInfo.softwareName } data-toggle="tooltip" data-placement="top" title="" data-original-title="恭喜您，您的审核已经通过，您可以点击上架发布您的APP">上架</a>
 											</c:when>
-											<c:when test="${appInfo.status == 4}">
+											<c:when test="${appInfo.status == 1}">
 												<a class="saleSwichClose" saleSwitch="close" appinfoid=${appInfo.id }  appsoftwarename=${appInfo.softwareName } data-toggle="tooltip" data-placement="top" title="" data-original-title="您可以点击下架来停止发布您的APP，市场将不提供APP的下载">下架</a>
 											</c:when>
 										</c:choose>
@@ -206,7 +206,7 @@
 											appinfoid="${appInfo.id }" status="${appInfo.status }" statusname="${appInfo.statusName }"
 											data-toggle="tooltip" data-placement="top" title="" data-original-title="修改APP基础信息">修改</a></li>
                         <li><a  class="viewApp" appinfoid=${appInfo.id }  data-toggle="tooltip" data-placement="top" title="" data-original-title="查看APP基础信息以及全部版本信息">查看</a></li>
-						<li><a  class="deleteApp" appinfoid=${appInfo.id }  appsoftwarename=${appInfo.softwareName } data-toggle="tooltip" data-placement="top" title="" data-original-title="删除APP基础信息以及全部版本信息">删除</a></li>
+						<li><a  class="deleteApp" appinfoid='${appInfo.id}'  appsoftwarename= '${appInfo.softwareName }' data-toggle="tooltip" data-placement="top" title="" data-original-title="删除APP基础信息以及全部版本信息">删除</a></li>
                       </ul>
                     </div>
 										</td>
