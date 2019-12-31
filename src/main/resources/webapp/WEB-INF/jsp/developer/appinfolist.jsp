@@ -106,7 +106,7 @@
 							</div>
 						</div>
 					</li>
-					<li><button type="submit" class="btn btn-primary"> 查询 </button></li>
+					<li><button type="submit" class="btn btn-primary" id="btn_search"> 查询 </button></li>
 				</ul>
 			</form>
 		</div>

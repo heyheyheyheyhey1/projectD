@@ -80,4 +80,7 @@
     uodate_time, apkLocPath, apkFileName, versionInfo
     from app_version
   </select>
+  <delete id="deletByAppId">
+    delete  from app_version where appId= #{id}
+  </delete>
 </mapper>

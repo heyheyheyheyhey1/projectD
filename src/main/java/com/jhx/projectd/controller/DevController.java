@@ -21,7 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -175,12 +177,33 @@ public class DevController {
             return "developer/appinfoadd";
         }
 
-        File file=new File(UP_LOAD_FILE_ROOT_PATH+ UUID.randomUUID()+pageInfo.getA_logoPicPath().getOriginalFilename().substring(pageInfo.getA_logoPicPath().getOriginalFilename().lastIndexOf(".")));
-        System.out.println(file.getAbsolutePath());
-        appInfoService.insert(new AppInfo(pageInfo,file.getAbsolutePath()));
+        File file=new File(UUID.randomUUID()+pageInfo.getA_logoPicPath().getOriginalFilename().substring(pageInfo.getA_logoPicPath().getOriginalFilename().lastIndexOf(".")));
         pageInfo.getA_logoPicPath().transferTo(file);
+//        pageInfo.getA_logoPicPath()
+        appInfoService.insert(new AppInfo(pageInfo,file.getAbsolutePath()));
         model.addAttribute("fileUploadError","上传完成了嗷");
 
         return "developer/appinfoadd";
+    }
+    @ResponseBody
+    @RequestMapping("flatform/app/delapp")
+    public Map<String,String> delApp(@RequestParam("id")Integer id){
+        Map <String,String> map = new HashMap<>();
+        AppInfo appInfo = appInfoService.selectByPrimaryKey(id);
+        if (appInfo==null||appInfo.getDevId()!=id){
+            map.put("status","failed");
+            map.put("info","没这app或者你不是这个app与开发者不对应");
+        }
+        appInfoService.deleteByPrimaryKey(id);
+
+        map.put("status","ok");
+        map.put("info","");
+        return map;
+    }
+    @RequestMapping("flatform/app/appversionadd")
+    public String addVersion(Model model,@RequestParam("id")Integer appId,HttpServletRequest request){
+        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
+        model.addAttribute("devUserSession",devUser);
+        return "developer/appversionadd";
     }
 }

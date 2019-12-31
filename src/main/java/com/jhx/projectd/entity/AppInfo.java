@@ -4,6 +4,8 @@ import com.jhx.projectd.utils.AddNewAppPageInfo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 public class AppInfo implements Serializable {
@@ -658,6 +660,9 @@ public class AppInfo implements Serializable {
         setStatus(pageInfo.getStatus());
         setAppInfo(pageInfo.getAppInfo());
         setSoftwareSize(pageInfo.getSoftwareSize());
+        setCreate_time(null);
+        setUpdate_time(null);
+
     }
 
     /**

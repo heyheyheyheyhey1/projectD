@@ -43,4 +43,5 @@ public interface AppVersionMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(AppVersion record);
+    int deleteByAppId(Integer id);
 }

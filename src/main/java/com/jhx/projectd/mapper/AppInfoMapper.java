@@ -3,6 +3,7 @@ package com.jhx.projectd.mapper;
 import com.jhx.projectd.entity.AppInfo;
 import com.jhx.projectd.utils.AppListColumn;
 import com.jhx.projectd.utils.AppListPageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public interface AppInfoMapper {
      */
     int updateByPrimaryKey(AppInfo record);
 
-    List<AppInfo> selectByAPKName(String name);
+    List<AppInfo> selectByAPKName(@Param("name") String name);
 
-    List<AppListColumn> selectByParams(AppListPageInfo params);
+    List<AppListColumn> selectByParams(@Param("params") AppListPageInfo params);
 }

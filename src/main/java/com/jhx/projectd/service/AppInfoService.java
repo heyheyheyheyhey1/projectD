@@ -16,11 +16,13 @@ public class AppInfoService implements AppInfoMapper {
     AppInfoMapper appInfoMapper;
     @Override
     public int deleteByPrimaryKey(Integer id) {
+        appInfoMapper.deleteByPrimaryKey(id);
         return 0;
     }
 
     @Override
     public int insert(AppInfo record) {
+        appInfoMapper.insert(record);
         return 0;
     }
 
