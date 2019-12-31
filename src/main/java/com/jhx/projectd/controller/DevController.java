@@ -181,7 +181,7 @@ public class DevController {
         model.addAttribute("devUserSession",devUser);
         pageInfo.setDevId(devUser.getId());
         MultipartFile multipartFile = pageInfo.getA_logoPicPath();
-        if (multipartFile==null||UploadFileUtils.isImage(pageInfo.getA_logoPicPath())) {
+        if (multipartFile==null||!UploadFileUtils.isImage(pageInfo.getA_logoPicPath())) {
             model.addAttribute("fileUploadError","你没有上传图片文件嗷");
             return "developer/appinfoadd";
         }

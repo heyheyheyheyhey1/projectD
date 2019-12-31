@@ -29,7 +29,7 @@ public class UploadFileUtils {
     public  static  boolean isImage(MultipartFile f) throws IOException {
         try{
             Image image = ImageIO.read(f.getInputStream());
-            return image == null;
+            return image != null;
         }catch (Exception e){
             System.out.println("不是图片");
             return false;

@@ -653,6 +653,7 @@ public class AppInfo implements Serializable {
         setLogoPicPath(pageInfo.getA_logoPicPath().getOriginalFilename());
         setDownload(pageInfo.getDownloads());
         setSoftwareName(pageInfo.getSoftwareName());
+        setAPKName(pageInfo.getAPKName());
         setCateLevel1(pageInfo.getCategoryLevel1());
         setCateLevel2(pageInfo.getCategoryLevel2());
         setCateLevel3(pageInfo.getCategoryLevel3());
