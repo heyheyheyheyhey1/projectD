@@ -21,7 +21,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">软件名称</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<input name="querySoftwareName" type="text" class="form-control col-md-7 col-xs-12" value="${querySoftwareName }">
+								<input name="querySoftwareName" type="text" class="form-control col-md-7 col-xs-12" value="${pageInfo.querySoftwareName }">
 							</div>
 						</div>
 					</li>
@@ -34,7 +34,7 @@
 									<c:if test="${flatFormList != null }">
 									   <option value="">--请选择--</option>
 									   <c:forEach var="dataDictionary" items="${flatFormList}">
-									   		<option <c:if test="${dataDictionary.valueId == queryFlatformId }">selected="selected"</c:if>
+									   		<option <c:if test="${dataDictionary.valueId == pageInfo.queryFlatformId }">selected="selected"</c:if>
 									   		value="${dataDictionary.valueId}">${dataDictionary.valueName}</option>
 									   </c:forEach>
 									</c:if>
@@ -46,11 +46,11 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">一级分类</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<select id="queryCategoryLevel1" name="queryCategoryLevel1" class="form-control">
+								<select id="queryCategoryLevel1" name="queryCategoryLevel1Id" class="form-control">
 									<c:if test="${categoryLevel1List != null }">
 									   <option value="">--请选择--</option>
 									   <c:forEach var="appCategory" items="${categoryLevel1List}">
-									   		<option <c:if test="${appCategory.id == queryCategoryLevel1 }">selected="selected"</c:if>
+									   		<option <c:if test="${appCategory.id == pageInfo.queryCategoryLevel1Id }">selected="selected"</c:if>
 									   		value="${appCategory.id}">${appCategory.categoryName}</option>
 									   </c:forEach>
 									</c:if>
@@ -63,11 +63,11 @@
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">二级分类</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 							<input type="hidden" name="categorylevel2list" id="categorylevel2list"/>
-        						<select name="queryCategoryLevel2" id="queryCategoryLevel2" class="form-control">
+        						<select name="queryCategoryLevel2Id" id="queryCategoryLevel2" class="form-control">
         							<c:if test="${categoryLevel2List != null }">
 									   <option value="">--请选择--</option>
 									   <c:forEach var="appCategory" items="${categoryLevel2List}">
-									   		<option <c:if test="${appCategory.id == queryCategoryLevel2 }">selected="selected"</c:if>
+									   		<option <c:if test="${appCategory.id == pageInfo.queryCategoryLevel2Id }">selected="selected"</c:if>
 									   		value="${appCategory.id}">${appCategory.categoryName}</option>
 									   </c:forEach>
 									</c:if>
@@ -79,11 +79,11 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">三级分类</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-        						<select name="queryCategoryLevel3" id="queryCategoryLevel3" class="form-control">
+        						<select name="queryCategoryLevel3Id" id="queryCategoryLevel3" class="form-control">
         							<c:if test="${categoryLevel3List != null }">
 									   <option value="">--请选择--</option>
 									   <c:forEach var="appCategory" items="${categoryLevel3List}">
-									   		<option <c:if test="${appCategory.id == queryCategoryLevel3 }">selected="selected"</c:if>
+									   		<option <c:if test="${appCategory.id == pageInfo.queryCategoryLevel3Id }">selected="selected"</c:if>
 									   		value="${appCategory.id}">${appCategory.categoryName}</option>
 									   </c:forEach>
 									</c:if>
