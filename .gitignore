@@ -32,3 +32,6 @@ build/
 
 ## upload file ##
 **/uploadfiles/**
+
+##config file##
+**/application.properties/**

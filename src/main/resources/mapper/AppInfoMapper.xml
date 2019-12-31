@@ -79,6 +79,7 @@
       appInfo = #{appInfo,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
@@ -191,5 +192,11 @@
 <!--&lt;!&ndash;      </if>&ndash;&gt;-->
 
 <!--    </where>-->
+  </select>
+  <select id="selectByAPKName" resultMap="BaseResultMap">
+    select *
+    from app_info
+    where
+    APKNAME = '${name}'
   </select>
 </mapper>

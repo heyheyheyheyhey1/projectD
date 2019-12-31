@@ -1,6 +1,8 @@
 package com.jhx.projectd.controller;
-
+import com.alibaba.fastjson.JSON;
 import com.jhx.projectd.entity.AppCategory;
+import com.jhx.projectd.entity.AppInfo;
+import com.jhx.projectd.entity.AppStatus;
 import com.jhx.projectd.entity.DevUser;
 import com.jhx.projectd.service.AppCategoryService;
 import com.jhx.projectd.service.AppInfoService;
@@ -8,11 +10,11 @@ import com.jhx.projectd.service.AppStatusService;
 import com.jhx.projectd.service.DevUserService;
 import com.jhx.projectd.utils.AppListColumn;
 import com.jhx.projectd.utils.AppListPageInfo;
+import com.jhx.projectd.utils.UnivsJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -72,6 +74,7 @@ public class DevController {
         model.addAttribute("categoryLevel1List",appCategoryService.selectByLevel(1));
         return "developer/appinfolist";
     }
+
     @PostMapping("flatform/app/list")
     public String getAappList(Model model, @ModelAttribute AppListPageInfo pageInfo,HttpServletRequest request) {
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
@@ -96,13 +99,62 @@ public class DevController {
 
         return "developer/appinfolist";
     }
+
     @ResponseBody
-    @GetMapping("flatform/app/categorylevellist.json")
+    @GetMapping("flatform/app/categorylevellist")
     public List<AppCategory>  catgrlevellist(@RequestParam("pid")Integer pid,HttpServletResponse response){
         if (pid!=null){
             return appCategoryService.selectByParentId(pid);
         }
-        response.setStatus(404);
-        return  null;
+        else{
+            return appCategoryService.selectByLevel(1);
+        }
+    }
+    @ResponseBody
+    @GetMapping("flatform/app/queryFlatformList")
+    public List<AppStatus>  queryFlatformList(@RequestParam("tCode")Integer tCode, HttpServletResponse response){
+        if (tCode!=null){
+            return appStatusService.selectByTypeCode(tCode);
+        }
+        else {
+            return appStatusService.selectByTypeCode(2);
+        }
+    }
+
+
+    @ResponseBody
+    @GetMapping("flatform/app/apkexist")
+    public UnivsJson  apkexist(@RequestParam("APKName")String APKName, HttpServletResponse response){
+        if (appInfoService.selectByAPKName(APKName).size()!=0) return new UnivsJson().setStatus("false").setInfo("不可用");
+        else return new UnivsJson().setStatus("ok").setInfo("可用");
+    }
+
+    @GetMapping("flatform/app/saleSwitch")
+    @ResponseBody
+    public UnivsJson saleSwitch(HttpServletRequest request,HttpServletResponse response,@RequestParam("appId")Integer appId){
+        DevUser devUser=devUserService.selectByIdFromSession(request.getSession());
+        AppInfo appInfo = appInfoService.selectByPrimaryKey(appId);
+        if (appInfo==null||appInfo.getDevId()!=devUser.getId()){
+            response.setStatus(403);
+            return new UnivsJson().setStatus("false").setInfo("没这个爱啪啪或者爱啪啪开发者与当前开发者不对应");
+        }
+        System.out.println("===before"+appInfo.getStatus());
+        appInfo.setStatus(appInfo.getStatus()==1?9:1);
+        System.out.println("=====after"+appInfoService.selectByPrimaryKey(appInfo.getId()).getStatus());
+        appInfoService.updateByPrimaryKey(appInfo);
+        return new UnivsJson().setStatus("ok").setInfo("操作成功") ;
+    }
+    @GetMapping("flatform/app/appinfoadd")
+    public String appInfoAd(Model model,HttpServletRequest request){
+        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
+        model.addAttribute("devUserSession",devUser);
+        return "developer/appinfoadd";
+    }
+    @PostMapping("flatform/app/appinfoaddsave")
+    public String appInfoSave(Model model,HttpServletRequest request){
+        JSON json;
+        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
+        model.addAttribute("devUserSession",devUser);
+        return "developer/appinfoadd";
     }
 }

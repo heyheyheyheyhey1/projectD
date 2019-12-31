@@ -25,7 +25,7 @@ public class AppInfoService implements AppInfoMapper {
 
     @Override
     public AppInfo selectByPrimaryKey(Integer id) {
-        return null;
+        return appInfoMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -35,11 +35,17 @@ public class AppInfoService implements AppInfoMapper {
 
     @Override
     public int updateByPrimaryKey(AppInfo record) {
+        appInfoMapper.updateByPrimaryKey(record);
         return 0;
     }
 
     @Override
     public List<AppListColumn> selectByParams(Object params) {
         return appInfoMapper.selectByParams(params);
+    }
+
+    @Override
+    public List<AppListColumn> selectByAPKName(String name) {
+        return appInfoMapper.selectByAPKName(name);
     }
 }

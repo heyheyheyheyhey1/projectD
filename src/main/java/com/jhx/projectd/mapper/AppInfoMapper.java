@@ -47,6 +47,7 @@ public interface AppInfoMapper {
      */
     int updateByPrimaryKey(AppInfo record);
     List<AppListColumn> selectByParams(@Param("params") Object params);
+    List<AppListColumn> selectByAPKName(@Param("name") String name);
 
 
 }
