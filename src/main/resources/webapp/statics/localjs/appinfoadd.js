@@ -105,6 +105,7 @@ $(function(){
 			data:{APKName:$("#APKName").val()},//请求参数
 			dataType:"json",//ajax接口（请求url）返回的数据类型
 			success:function(data){//data：返回数据（json对象）
+				console.log(data)
 				if (data.status!="ok"){
 					alert("该域名不可用")
 				}

@@ -111,7 +111,7 @@
     where
     APKNAME = '${name}'
   </select>
-  <select id="selectByParams" resultType="com.jhx.projectd.utils.AppListColumn">
+  <select id="selectByParams" resultType="java.util.HashMap">
 
     select app_info.id,APKName,softwareSize,softwareName,download as downloads,versionNo,versionId
     ,app_status_flatform.valueName as 'flatformName'
@@ -131,27 +131,24 @@
       <if test="params.querySoftwareName!=null and params.querySoftwareName!='' ">
         and softwareName like '%${params.querySoftwareName}%'
       </if>
-      <if test="params.queryStatusId!=null">
+      <if test="params.queryStatusId!=null and params.queryStatusId!=''">
         and status = ${params.queryStatusId}
       </if>
-      <if test="params.queryFlatformId!=null">
+      <if test="params.queryFlatformId!=null and params.queryFlatformId!=''">
         and flatformId = ${params.queryFlatformId}
       </if>
-      <if test="params.queryCategoryLevel1Id!=null">
+      <if test="params.queryCategoryLevel1Id!=null and params.queryCategoryLevel1Id!='' ">
         and cateLevel1= ${params.queryCategoryLevel1Id}
       </if>
-      <if test="params.queryCategoryLevel2Id!=null">
+      <if test="params.queryCategoryLevel2Id!=null and params.queryCategoryLevel2Id!='' ">
         and cateLevel2 = ${params.queryCategoryLevel2Id}
       </if>
-      <if test="params.queryCategoryLevel3Id!=null">
+      <if test="params.queryCategoryLevel3Id!=null and params.queryCategoryLevel3Id!=''">
         and cateLevel3= ${params.queryCategoryLevel3Id}
       </if>
-      <if test="params.devId!=null">
+      <if test="params.devId!=null and params.devId!=''">
         and devId= ${params.devId}
       </if>
-      <!--      &amp;lt;if test="params.!=null"&amp;gt;-->
-      <!--        and cateLevel3= ${params.queryCategoryLevel3}-->
-      <!--      &amp;lt;/if&amp;gt;-->
 
     </where>
 

@@ -8,9 +8,6 @@ import com.jhx.projectd.service.AdminUserService;
 import com.jhx.projectd.service.AppInfoService;
 import com.jhx.projectd.service.AppStatusService;
 import com.jhx.projectd.service.AppCategoryService;
-import com.jhx.projectd.utils.AppListColumn;
-import com.jhx.projectd.utils.AppListPageInfo;
-import org.eclipse.jdt.internal.compiler.env.IModulePathEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
@@ -21,8 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLOutput;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/manager")
@@ -94,22 +93,22 @@ public class ManageController {
         return "backend/applist";
     }
     @PostMapping("backend/app/list")
-    public String appSearch(Model model,HttpServletRequest request, @ModelAttribute AppListPageInfo pageInfo){
+    public String appSearch(Model model,HttpServletRequest request, @ModelAttribute Map<String,String> pageInfo){
         System.out.println("============================================");
         System.out.println("开始查询未审核名单!");
         HttpSession session = request.getSession();
         if (session.getAttribute("adminId")== null) return "redirect:/manager/login";
-        pageInfo.setQueryStatusId(2);
+        pageInfo.put("queryStatusId",String.valueOf(2));
         System.out.println(pageInfo.toString());
-        List<AppListColumn> appListColumns = appInfoService.selectByParams(pageInfo);
+        List<HashMap<String,Object>> appListColumns = appInfoService.selectByParams(pageInfo);
         List<AppCategory> appCategories = appCategoryService.selectByLevel(1);
         model.addAttribute("appInfoList",appListColumns);
         model.addAttribute("flatFormList",appStatusService.selectByTypeCode(2));
         model.addAttribute("categoryLevel1List",appCategoryService.selectByLevel(1));
         int parentId = appCategories.get(0).getId();
-        model.addAttribute("categoryLevel2List",appCategoryService.selectByParentId(pageInfo.getQueryCategoryLevel2Id()==null?2:pageInfo.getQueryCategoryLevel1Id()));
+        model.addAttribute("categoryLevel2List",appCategoryService.selectByParentId(pageInfo.get("queryCategoryLevel1Id")!=null&&pageInfo.get("queryCategoryLevel1Id")!=""? Integer.parseInt(pageInfo.get("queryCategoryLevel1Id")):2));
         List<AppCategory> appCategories2 = appCategoryService.selectByParentId(parentId);
-        model.addAttribute("categoryLevel3List",appCategoryService.selectByParentId(pageInfo.getQueryCategoryLevel3Id()==null?3:pageInfo.getQueryCategoryLevel2Id()));
+        model.addAttribute("categoryLevel3List",appCategoryService.selectByParentId(pageInfo.get("queryCategoryLevel2Id")!=null&&pageInfo.get("queryCategoryLevel2Id")!=""?Integer.parseInt(pageInfo.get("queryCategoryLevel2Id")):3));
         model.addAttribute("pageInfo",pageInfo);
         //model.addAttribute("pages",)
         return "backend/applist";

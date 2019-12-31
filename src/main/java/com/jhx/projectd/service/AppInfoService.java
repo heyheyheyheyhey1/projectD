@@ -2,13 +2,13 @@ package com.jhx.projectd.service;
 
 import com.jhx.projectd.entity.AppInfo;
 import com.jhx.projectd.mapper.AppInfoMapper;
-import com.jhx.projectd.utils.AppListColumn;
-import com.jhx.projectd.utils.AppListPageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class AppInfoService implements AppInfoMapper {
 
@@ -47,7 +47,7 @@ public class AppInfoService implements AppInfoMapper {
     }
 
     @Override
-    public List<AppListColumn> selectByParams(AppListPageInfo params) {
+    public List<HashMap<String,Object>> selectByParams(Map<String,String> params) {
         return appInfoMapper.selectByParams(params);
     }
 }

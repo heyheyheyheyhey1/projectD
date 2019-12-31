@@ -8,15 +8,15 @@ import com.jhx.projectd.service.AppCategoryService;
 import com.jhx.projectd.service.AppInfoService;
 import com.jhx.projectd.service.AppStatusService;
 import com.jhx.projectd.service.DevUserService;
-import com.jhx.projectd.utils.AddNewAppPageInfo;
-import com.jhx.projectd.utils.AppListColumn;
-import com.jhx.projectd.utils.AppListPageInfo;
-import com.jhx.projectd.utils.UnivsJson;
+import com.jhx.projectd.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -37,9 +37,6 @@ public class DevController {
     AppCategoryService appCategoryService;
     @Autowired
     AppInfoService appInfoService;
-
-    @Value("${UP_LOAD_FILE_ROOT_PATH}")
-    private String  UP_LOAD_FILE_ROOT_PATH;
 
     @GetMapping("login")
     public String devLogin(){
@@ -84,20 +81,20 @@ public class DevController {
     }
 
     @PostMapping("flatform/app/list")
-    public String getAappList(Model model, @ModelAttribute AppListPageInfo pageInfo,HttpServletRequest request) {
+    public String getAappList(Model model, @RequestParam HashMap <String ,String> pageInfo,HttpServletRequest request) {
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
-
         System.out.println(pageInfo.toString());
         if (devUser==null) return "redirect:/";
-        pageInfo.setDevId(devUser.getId());
+        pageInfo.put("devId",String.valueOf(devUser.getId()));
+
         model.addAttribute("devUserSession",devUser);
         model.addAttribute("statusList",appStatusService.selectByTypeCode(1));
         model.addAttribute("flatFormList",appStatusService.selectByTypeCode(2));
         model.addAttribute("categoryLevel1List",appCategoryService.selectByLevel(1));
-        model.addAttribute("categoryLevel2List",appCategoryService.selectByParentId(pageInfo.getQueryCategoryLevel2Id()==null?2:pageInfo.getQueryCategoryLevel1Id()));
-        model.addAttribute("categoryLevel3List",appCategoryService.selectByParentId(pageInfo.getQueryCategoryLevel3Id()==null?3:pageInfo.getQueryCategoryLevel2Id()));
+        model.addAttribute("categoryLevel2List",appCategoryService.selectByParentId(pageInfo.get("queryCategoryLevel1Id")!=null&&pageInfo.get("queryCategoryLevel1Id")!=""?Integer.parseInt(pageInfo.get("queryCategoryLevel1Id")):2));
+        model.addAttribute("categoryLevel3List",appCategoryService.selectByParentId(pageInfo.get("queryCategoryLevel2Id")!=null&&pageInfo.get("queryCategoryLevel2Id")!=""?Integer.parseInt(pageInfo.get("queryCategoryLevel2Id")):3));
 
-        List<AppListColumn> list=appInfoService.selectByParams(pageInfo);
+        List<HashMap<String,Object>> list=appInfoService.selectByParams(pageInfo);
 
         if (list.size()!=0){
             System.out.println(list.size());
@@ -133,25 +130,41 @@ public class DevController {
 
     @ResponseBody
     @GetMapping("flatform/app/apkexist")
-    public UnivsJson  apkexist(@RequestParam("APKName")String APKName, HttpServletResponse response){
-        if (appInfoService.selectByAPKName(APKName).size()!=0) return new UnivsJson().setStatus("false").setInfo("不可用");
-        else return new UnivsJson().setStatus("ok").setInfo("可用");
+    public Map<String, Object>  apkexist(@RequestParam("APKName")String APKName, HttpServletResponse response){
+        Map<String ,Object> map = new HashMap<>();
+        if (appInfoService.selectByAPKName(APKName).size()!=0) {
+
+            map.put("status","false");
+            map.put("info","有这个名字了");
+            return map;
+        }
+        else {
+            map.put("status","ok");
+            map.put("info","操作成功");
+            return map;
+        }
     }
 
     @GetMapping("flatform/app/saleSwitch")
     @ResponseBody
-    public UnivsJson saleSwitch(HttpServletRequest request,HttpServletResponse response,@RequestParam("appId")Integer appId){
+    public Map<String,Object> saleSwitch(HttpServletRequest request,HttpServletResponse response,@RequestParam("appId")Integer appId){
         DevUser devUser=devUserService.selectByIdFromSession(request.getSession());
         AppInfo appInfo = appInfoService.selectByPrimaryKey(appId);
+        Map<String,Object> map=new HashMap<>();
+
         if (appInfo==null||appInfo.getDevId()!=devUser.getId()){
             response.setStatus(403);
-            return new UnivsJson().setStatus("false").setInfo("没这个爱啪啪或者爱啪啪开发者与当前开发者不对应");
+            map.put("status","false");
+            map.put("info","没这个爱啪啪或者爱啪啪开发者与当前开发者不对应");
+            return map;
         }
         System.out.println("===before"+appInfo.getStatus());
         appInfo.setStatus(appInfo.getStatus()==1?9:1);
         System.out.println("=====after"+appInfoService.selectByPrimaryKey(appInfo.getId()).getStatus());
         appInfoService.updateByPrimaryKey(appInfo);
-        return new UnivsJson().setStatus("ok").setInfo("操作成功") ;
+        map.put("status","ok");
+        map.put("info","操作成功");
+        return map;
     }
     @GetMapping("flatform/app/appinfoadd")
     public String appInfoAd(Model model,HttpServletRequest request){
@@ -167,9 +180,9 @@ public class DevController {
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
         model.addAttribute("devUserSession",devUser);
         pageInfo.setDevId(devUser.getId());
-
-        if (pageInfo.getA_logoPicPath()==null) {
-            model.addAttribute("fileUploadError","你没有选择图片文件嗷");
+        MultipartFile multipartFile = pageInfo.getA_logoPicPath();
+        if (multipartFile==null||UploadFileUtils.isImage(pageInfo.getA_logoPicPath())) {
+            model.addAttribute("fileUploadError","你没有上传图片文件嗷");
             return "developer/appinfoadd";
         }
         if (appInfoService.selectByAPKName(pageInfo.getAPKName()).size()!=0){
@@ -177,14 +190,31 @@ public class DevController {
             return "developer/appinfoadd";
         }
 
-        File file=new File(UUID.randomUUID()+pageInfo.getA_logoPicPath().getOriginalFilename().substring(pageInfo.getA_logoPicPath().getOriginalFilename().lastIndexOf(".")));
-        pageInfo.getA_logoPicPath().transferTo(file);
-//        pageInfo.getA_logoPicPath()
-        appInfoService.insert(new AppInfo(pageInfo,file.getAbsolutePath()));
+        System.out.println("文件大小"+pageInfo.getA_logoPicPath().getSize());
+        System.out.println("文件绝对路径"+new File("./").getAbsolutePath());
+        String absolutePath = UploadFileUtils.saveUploadfile(pageInfo.getA_logoPicPath());
+        appInfoService.insert(new AppInfo(pageInfo,absolutePath));
         model.addAttribute("fileUploadError","上传完成了嗷");
 
         return "developer/appinfoadd";
     }
+
+    @RequestMapping("flatform/app/appversionadd")
+    public String addVersion(Model model,@RequestParam("id")Integer appId,HttpServletRequest request){
+        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
+        model.addAttribute("devUserSession",devUser);
+        return "developer/appversionadd";
+    }
+
+    @RequestMapping("flatform/app/addversionsave")
+    public String addVersionSave(Model model, @ModelAttribute AppVersionPageInfo pageInfo, HttpServletRequest request){
+        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
+        System.out.println(pageInfo.getA_downloadLink().getSize());
+        model.addAttribute("devUserSession",devUser);
+        model.addAttribute("fileUploadError","添加版本成功!");
+        return "developer/appversionadd";
+    }
+
     @ResponseBody
     @RequestMapping("flatform/app/delapp")
     public Map<String,String> delApp(@RequestParam("id")Integer id){
@@ -195,15 +225,8 @@ public class DevController {
             map.put("info","没这app或者你不是这个app与开发者不对应");
         }
         appInfoService.deleteByPrimaryKey(id);
-
         map.put("status","ok");
         map.put("info","");
         return map;
-    }
-    @RequestMapping("flatform/app/appversionadd")
-    public String addVersion(Model model,@RequestParam("id")Integer appId,HttpServletRequest request){
-        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
-        model.addAttribute("devUserSession",devUser);
-        return "developer/appversionadd";
     }
 }

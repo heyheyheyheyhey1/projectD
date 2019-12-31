@@ -19,6 +19,7 @@ public class AppVersionService implements AppVersionMapper {
 
     @Override
     public int insert(AppVersion record) {
+        appVersionMapper.insert(record);
         return 0;
     }
 

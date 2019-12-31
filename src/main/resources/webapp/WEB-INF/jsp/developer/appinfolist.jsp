@@ -77,7 +77,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">二级分类</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							<input type="hidden" name="categorylevel2list" id="categorylevel2list"/>
+<%--							<input type="hidden" name="categorylevel2list" id="categorylevel2list"/>--%>
         						<select name="queryCategoryLevel2Id" id="queryCategoryLevel2" class="form-control">
         							<c:if test="${categoryLevel2List != null }">
 									   <option value="">--请选择--</option>
