@@ -72,7 +72,7 @@
     select *
     from app_status where typeCode = #{code}
   </select>
-  <select id="selectByValue2" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  <select id="selectByValue" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select *
     from app_status where valueId = ${valueId}
   </select>

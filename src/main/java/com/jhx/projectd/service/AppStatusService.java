@@ -42,8 +42,8 @@ public class AppStatusService implements AppStatusMapper {
     }
 
     @Override
-    public List<AppStatus> selectByValue2(int valueId) {
-        return appStatusMapper.selectByValue2(valueId);
+    public List<AppStatus> selectByValue(int valueId) {
+        return appStatusMapper.selectByValue(valueId);
     }
 
 }
