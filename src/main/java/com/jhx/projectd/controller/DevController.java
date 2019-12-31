@@ -8,17 +8,21 @@ import com.jhx.projectd.service.AppCategoryService;
 import com.jhx.projectd.service.AppInfoService;
 import com.jhx.projectd.service.AppStatusService;
 import com.jhx.projectd.service.DevUserService;
+import com.jhx.projectd.utils.AddNewAppPageInfo;
 import com.jhx.projectd.utils.AppListColumn;
 import com.jhx.projectd.utils.AppListPageInfo;
 import com.jhx.projectd.utils.UnivsJson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/dev")
@@ -32,6 +36,8 @@ public class DevController {
     @Autowired
     AppInfoService appInfoService;
 
+    @Value("${UP_LOAD_FILE_ROOT_PATH}")
+    private String  UP_LOAD_FILE_ROOT_PATH;
 
     @GetMapping("login")
     public String devLogin(){
@@ -90,6 +96,7 @@ public class DevController {
         model.addAttribute("categoryLevel3List",appCategoryService.selectByParentId(pageInfo.getQueryCategoryLevel3Id()==null?3:pageInfo.getQueryCategoryLevel2Id()));
 
         List<AppListColumn> list=appInfoService.selectByParams(pageInfo);
+
         if (list.size()!=0){
             System.out.println(list.size());
         }
@@ -150,11 +157,30 @@ public class DevController {
         model.addAttribute("devUserSession",devUser);
         return "developer/appinfoadd";
     }
+
+
     @PostMapping("flatform/app/appinfoaddsave")
-    public String appInfoSave(Model model,HttpServletRequest request){
-        JSON json;
+    public String appInfoSave(Model model, @ModelAttribute AddNewAppPageInfo pageInfo, HttpServletRequest request) throws IOException {
+
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
         model.addAttribute("devUserSession",devUser);
+        pageInfo.setDevId(devUser.getId());
+
+        if (pageInfo.getA_logoPicPath()==null) {
+            model.addAttribute("fileUploadError","你没有选择图片文件嗷");
+            return "developer/appinfoadd";
+        }
+        if (appInfoService.selectByAPKName(pageInfo.getAPKName()).size()!=0){
+            model.addAttribute("fileUploadError","注意APKName嗷");
+            return "developer/appinfoadd";
+        }
+
+        File file=new File(UP_LOAD_FILE_ROOT_PATH+ UUID.randomUUID()+pageInfo.getA_logoPicPath().getOriginalFilename().substring(pageInfo.getA_logoPicPath().getOriginalFilename().lastIndexOf(".")));
+        System.out.println(file.getAbsolutePath());
+        appInfoService.insert(new AppInfo(pageInfo,file.getAbsolutePath()));
+        pageInfo.getA_logoPicPath().transferTo(file);
+        model.addAttribute("fileUploadError","上传完成了嗷");
+
         return "developer/appinfoadd";
     }
 }

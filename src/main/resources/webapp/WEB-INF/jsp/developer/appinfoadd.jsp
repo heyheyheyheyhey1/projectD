@@ -106,7 +106,7 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">APP状态 <span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-            	<input type="hidden" name="status" id="status" value="1">待审核
+            	<input type="hidden" name="status" id="status" value="2">待审核
             </div>
           </div>
           <div class="item form-group">

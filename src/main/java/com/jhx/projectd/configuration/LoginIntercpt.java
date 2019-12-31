@@ -7,10 +7,10 @@ import javax.servlet.http.HttpSession;
 public class  LoginIntercpt implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("in preHandle");
+
         HttpSession session=request.getSession();
         if (session.getAttribute("devId")==null&&session.getAttribute("adminId")==null){
-            System.out.println("false null");
+            System.out.println("未登录的访问!拒绝!");
             response.sendRedirect("/");
             return false;
         }

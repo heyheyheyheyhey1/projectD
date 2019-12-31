@@ -5,14 +5,15 @@ import com.jhx.projectd.mapper.AppInfoMapper;
 import com.jhx.projectd.utils.AppListColumn;
 import com.jhx.projectd.utils.AppListPageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class AppInfoService implements AppInfoMapper {
+
     @Autowired
     AppInfoMapper appInfoMapper;
-
     @Override
     public int deleteByPrimaryKey(Integer id) {
         return 0;
@@ -30,22 +31,21 @@ public class AppInfoService implements AppInfoMapper {
 
     @Override
     public List<AppInfo> selectAll() {
-        return null;
+        return appInfoMapper.selectAll();
     }
 
     @Override
     public int updateByPrimaryKey(AppInfo record) {
-        appInfoMapper.updateByPrimaryKey(record);
         return 0;
     }
 
     @Override
-    public List<AppListColumn> selectByParams(Object params) {
-        return appInfoMapper.selectByParams(params);
+    public List<AppInfo> selectByAPKName(String name) {
+        return appInfoMapper.selectByAPKName(name) ;
     }
 
     @Override
-    public List<AppListColumn> selectByAPKName(String name) {
-        return appInfoMapper.selectByAPKName(name);
+    public List<AppListColumn> selectByParams(AppListPageInfo params) {
+        return appInfoMapper.selectByParams(params);
     }
 }
