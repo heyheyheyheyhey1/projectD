@@ -138,7 +138,7 @@ public class ManageController {
 
         return "backend/appcheck";
     }
-
+    
     @PostMapping("backend/app/checksave")
     public String appCheckSave(Model model,@RequestParam(value = "status",defaultValue = "")String status,
                 HttpServletRequest request){
@@ -184,7 +184,7 @@ public class ManageController {
         return "backend/appcheck";
     }
     @ResponseBody
-    @PostMapping("backend/app/categorylevellist.json")
+    @GetMapping("backend/app/categorylevellist.json")
     public List<AppCategory> getCategory(@RequestParam(value = "pid",defaultValue = "0")int pid){
         return appCategoryService.selectByParentId(pid);
     }
