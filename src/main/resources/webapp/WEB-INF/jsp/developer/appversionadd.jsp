@@ -63,7 +63,7 @@
 									<td>${appVersion.versionSize }</td>
 									<td>${appVersion.publishStatusName }</td>
 									<td>
-									<a href="${appVersion.downloadLink }">${appVersion.apkFileName }</a>
+									<a href="${pageContext.request.contextPath }${appVersion.downloadLink}" download="${appVersion.apkFileName}">${appVersion.apkFileName }</a>
 									</td>
 									<td><fmt:formatDate value="${appVersion.update_time }" pattern="yyyy-MM-dd"/></td>
 								</tr>
@@ -84,8 +84,8 @@
         </div>
         <div class="x_content" style="display: block;">
          <br>
-        <form class="form-horizontal form-label-left" action="addversionsave" method="post" enctype="multipart/form-data">
-           <input type="hidden" name="appId" name="appId" value="${appVersion.appId}">
+        <form class="form-horizontal form-label-left" action="appversionadd" method="post" enctype="multipart/form-data">
+           <input type="hidden" name="appId"  value="${appId}">
           <div class="item form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">版本号 <span class="required">*</span>
             </label>
@@ -107,7 +107,7 @@
           <div class="item form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12"  for="select">发布状态 <span class="required">*</span></label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="hidden" name="satusId" id="publishStatus" value="10">预发布
+              <input type="hidden" name="publishStatus" id="publishStatus" value="10">预发布
             </div>
           </div>
         

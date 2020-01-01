@@ -47,14 +47,14 @@
       devId, logoPicPath, versionId, 
       download, supportRom, create_time, 
       update_time, logoLocPath, onSaleDate, 
-      cateLevel3, flatformId, appInfo
+      cateLevel3, flatformId, appInfo,interfaceLanguage
       )
     values (#{softwareName,jdbcType=VARCHAR}, #{softwareSize,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
       #{cateLevel1,jdbcType=INTEGER}, #{cateLevel2,jdbcType=INTEGER}, #{APKName,jdbcType=VARCHAR}, 
       #{devId,jdbcType=INTEGER}, #{logoPicPath,jdbcType=VARCHAR}, #{versionId,jdbcType=INTEGER}, 
       #{download,jdbcType=BIGINT}, #{supportRom,jdbcType=VARCHAR}, #{create_time,jdbcType=TIMESTAMP}, 
-      #{update_time,jdbcType=TIMESTAMP}, #{logoLocPath,jdbcType=VARCHAR}, #{onSaleDate,jdbcType=TIMESTAMP}, 
-      #{cateLevel3,jdbcType=INTEGER}, #{flatformId,jdbcType=INTEGER}, #{appInfo,jdbcType=LONGVARCHAR}
+      #{update_time,jdbcType=TIMESTAMP}, #{logoLocPath,jdbcType=VARCHAR}, #{onSaleDate,jdbcType=TIMESTAMP},
+      #{cateLevel3,jdbcType=INTEGER}, #{flatformId,jdbcType=INTEGER}, #{appInfo,jdbcType=LONGVARCHAR},#{interfaceLanguage,jdbcType=VARCHAR}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.jhx.projectd.entity.AppInfo">
@@ -120,6 +120,8 @@
     ,app_category1.categoryName as 'categoryLevel1Name'
     ,app_category2.categoryName as 'categoryLevel2Name'
     ,app_category3.categoryName as 'categoryLevel3Name'
+    ,interfaceLanguage
+
     from app_info
     left join app_status as app_status_flatform on app_info.flatformId = app_status_flatform.id
     left join app_status as app_status_status on app_info.status= app_status_status.id
@@ -149,7 +151,8 @@
       <if test="params.devId!=null and params.devId!=''">
         and devId= ${params.devId}
       </if>
-
+        order  by app_info.id
+        desc
     </where>
 
   </select>

@@ -15,16 +15,23 @@ import java.util.List;
 import java.util.UUID;
 
 public class UploadFileUtils {
-    private static String  UPLOAD_FILE_ROOT_PATH="\\target\\classes\\webapp\\statics\\uploadfile\\";
+    private  static final String  UPLOAD_FILE_ROOT_PATH="/target/classes/webapp/statics/uploadfiles/";
+    private  static final String  UPLOAD_FILE_REAL_PATH="/target/classes/META-INF/resources/statics/uploadfiles/";
+    private static final String DOWNLOAD_FILE_PREFIX="/statics/uploadfiles/";
     public static String saveUploadfile(MultipartFile file) throws IOException {
         String suffix=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        System.out.println(UPLOAD_FILE_ROOT_PATH);
-        File tmpFile=new File(new File("").getAbsolutePath()+UPLOAD_FILE_ROOT_PATH+UUID.randomUUID().toString()+suffix);
-        if (!tmpFile.exists()){
-            tmpFile.createNewFile();
-        }
-        file.transferTo(tmpFile);
-        return "/statics/uploadfile/"+tmpFile.getName();
+        String name=UUID.randomUUID().toString();
+        File tmpFile=new File(new File("").getAbsolutePath()+UPLOAD_FILE_ROOT_PATH+name+suffix);
+        File realFile=new File(new File("").getAbsolutePath()+UPLOAD_FILE_REAL_PATH+name+suffix);
+        tmpFile.createNewFile();
+        realFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(tmpFile);
+        fos.write(file.getBytes());
+        fos = new FileOutputStream(realFile);
+        fos.write(file.getBytes());
+        fos.close();
+        System.out.println("写入绝对路径 "+ tmpFile.getAbsolutePath());
+        return DOWNLOAD_FILE_PREFIX+tmpFile.getName();
     }
     public  static  boolean isImage(MultipartFile f) throws IOException {
         try{

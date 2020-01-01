@@ -4,13 +4,33 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
-public class AppVersionPageInfo {
+public class AddAppVersionPageInfo {
     private Integer appId;
     private String  versionNo;
     private BigDecimal versionSize;
-    private Integer satusId;
     private String versionInfo;
+    private Integer publishStatus;
     private  MultipartFile a_downloadLink;
+
+    @Override
+    public String toString() {
+        return "AddAppVersionPageInfo{" +
+                "appId=" + appId +
+                ", versionNo='" + versionNo + '\'' +
+                ", versionSize=" + versionSize +
+                ", versionInfo='" + versionInfo + '\'' +
+                ", publishStatus=" + publishStatus +
+                ", a_downloadLink=" + a_downloadLink +
+                '}';
+    }
+
+    public Integer getPublishStatus() {
+        return publishStatus;
+    }
+
+    public void setPublishStatus(Integer publishStatus) {
+        this.publishStatus = publishStatus;
+    }
 
     public Integer getAppId() {
         return appId;
@@ -36,13 +56,6 @@ public class AppVersionPageInfo {
         this.versionSize = versionSize;
     }
 
-    public Integer getSatusId() {
-        return satusId;
-    }
-
-    public void setSatusId(Integer satusId) {
-        this.satusId = satusId;
-    }
 
     public String getVersionInfo() {
         return versionInfo;

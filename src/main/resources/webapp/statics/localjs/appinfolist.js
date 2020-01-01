@@ -202,7 +202,7 @@ var saleSwitchAjax = function(appId,obj){
 
 $(".viewApp").on("click",function(){
 	var obj = $(this);
-	window.location.href="appview/"+ obj.attr("appinfoid");
+	window.location.href="appview?appId="+ obj.attr("appinfoid");
 });
 
 $(".deleteApp").on("click",function(){

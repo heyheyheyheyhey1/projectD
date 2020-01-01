@@ -6,6 +6,7 @@ import com.jhx.projectd.mapper.AppVersionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -42,6 +43,16 @@ public class AppVersionService implements AppVersionMapper {
     public int deleteByAppId(Integer id) {
         appVersionMapper.deleteByAppId(id);
         return 0;
+    }
+
+    @Override
+    public List<AppVersion> selectByAppId(Integer id) {
+        return appVersionMapper.selectByAppId(id);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> selectFullInfoByAppId(Integer appId) {
+        return appVersionMapper.selectFullInfoByAppId(appId);
     }
 
 }

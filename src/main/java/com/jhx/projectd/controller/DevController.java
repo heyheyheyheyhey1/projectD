@@ -1,17 +1,8 @@
 package com.jhx.projectd.controller;
-import com.alibaba.fastjson.JSON;
-import com.jhx.projectd.entity.AppCategory;
-import com.jhx.projectd.entity.AppInfo;
-import com.jhx.projectd.entity.AppStatus;
-import com.jhx.projectd.entity.DevUser;
-import com.jhx.projectd.service.AppCategoryService;
-import com.jhx.projectd.service.AppInfoService;
-import com.jhx.projectd.service.AppStatusService;
-import com.jhx.projectd.service.DevUserService;
+import com.jhx.projectd.entity.*;
+import com.jhx.projectd.service.*;
 import com.jhx.projectd.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +15,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/dev")
@@ -37,6 +27,8 @@ public class DevController {
     AppCategoryService appCategoryService;
     @Autowired
     AppInfoService appInfoService;
+    @Autowired
+    AppVersionService appVersionService;
 
     @GetMapping("login")
     public String devLogin(){
@@ -191,27 +183,34 @@ public class DevController {
         }
 
         System.out.println("文件大小"+pageInfo.getA_logoPicPath().getSize());
-        System.out.println("文件绝对路径"+new File("./").getAbsolutePath());
-        String absolutePath = UploadFileUtils.saveUploadfile(pageInfo.getA_logoPicPath());
-        appInfoService.insert(new AppInfo(pageInfo,absolutePath));
+        String downloadPath = UploadFileUtils.saveUploadfile(pageInfo.getA_logoPicPath());
+        appInfoService.insert(new AppInfo(pageInfo,downloadPath));
         model.addAttribute("fileUploadError","上传完成了嗷");
 
         return "developer/appinfoadd";
     }
 
-    @RequestMapping("flatform/app/appversionadd")
+    @GetMapping("flatform/app/appversionadd")
     public String addVersion(Model model,@RequestParam("id")Integer appId,HttpServletRequest request){
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
         model.addAttribute("devUserSession",devUser);
+        model.addAttribute("appVersionList",appVersionService.selectFullInfoByAppId(appId));
+        model.addAttribute("appId",appId);
         return "developer/appversionadd";
     }
 
-    @RequestMapping("flatform/app/addversionsave")
-    public String addVersionSave(Model model, @ModelAttribute AppVersionPageInfo pageInfo, HttpServletRequest request){
+    @PostMapping("flatform/app/appversionadd")
+    public String addVersionSave(Model model, @ModelAttribute AddAppVersionPageInfo pageInfo, HttpServletRequest request) throws IOException {
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
-        System.out.println(pageInfo.getA_downloadLink().getSize());
+        System.out.println("文件大小"+pageInfo.getA_downloadLink().getSize());
+        System.out.println("页面属性"+pageInfo.toString());
+        String downloadLink=UploadFileUtils.saveUploadfile(pageInfo.getA_downloadLink());
+        System.out.println("文件绝对路径"+downloadLink);
+        appVersionService.insert(new AppVersion(pageInfo,downloadLink));
         model.addAttribute("devUserSession",devUser);
+        model.addAttribute("appVersionList",appVersionService.selectFullInfoByAppId(pageInfo.getAppId()));
         model.addAttribute("fileUploadError","添加版本成功!");
+        model.addAttribute("appId",pageInfo.getAppId());
         return "developer/appversionadd";
     }
 
@@ -229,4 +228,10 @@ public class DevController {
         map.put("info","");
         return map;
     }
+
+    @RequestMapping("flatform/app/appview")
+    public String viewApp(@RequestParam("appId")Integer id){
+        return "developer/appinfoview";
+    }
+
 }
