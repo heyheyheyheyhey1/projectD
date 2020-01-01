@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 
 public class AddNewAppPageInfo {
+    private Integer appId;
     private String softwareName;
     private String APKName;
     private String supportROM;
@@ -19,6 +20,15 @@ public class AddNewAppPageInfo {
     private Integer devId;
     private Integer status;
     private MultipartFile a_logoPicPath;
+
+    public Integer getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Integer appId) {
+        this.appId = appId;
+    }
+
     @Override
     public String toString() {
         return "AddNewAppPageInfo{" +

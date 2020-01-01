@@ -52,8 +52,8 @@
     values (#{softwareName,jdbcType=VARCHAR}, #{softwareSize,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
       #{cateLevel1,jdbcType=INTEGER}, #{cateLevel2,jdbcType=INTEGER}, #{APKName,jdbcType=VARCHAR}, 
       #{devId,jdbcType=INTEGER}, #{logoPicPath,jdbcType=VARCHAR}, #{versionId,jdbcType=INTEGER}, 
-      #{download,jdbcType=BIGINT}, #{supportRom,jdbcType=VARCHAR}, #{create_time,jdbcType=TIMESTAMP}, 
-      #{update_time,jdbcType=TIMESTAMP}, #{logoLocPath,jdbcType=VARCHAR}, #{onSaleDate,jdbcType=TIMESTAMP},
+      #{download,jdbcType=BIGINT}, #{supportRom,jdbcType=VARCHAR},now() ,
+        now(), #{logoLocPath,jdbcType=VARCHAR}, #{onSaleDate,jdbcType=TIMESTAMP},
       #{cateLevel3,jdbcType=INTEGER}, #{flatformId,jdbcType=INTEGER}, #{appInfo,jdbcType=LONGVARCHAR},#{interfaceLanguage,jdbcType=VARCHAR}
       )
   </insert>
@@ -74,8 +74,7 @@
       versionId = #{versionId,jdbcType=INTEGER},
       download = #{download,jdbcType=BIGINT},
       supportRom = #{supportRom,jdbcType=VARCHAR},
-      create_time = #{create_time,jdbcType=TIMESTAMP},
-      update_time = #{update_time,jdbcType=TIMESTAMP},
+      update_time = now(),
       logoLocPath = #{logoLocPath,jdbcType=VARCHAR},
       onSaleDate = #{onSaleDate,jdbcType=TIMESTAMP},
       cateLevel3 = #{cateLevel3,jdbcType=INTEGER},
@@ -120,8 +119,15 @@
     ,app_category1.categoryName as 'categoryLevel1Name'
     ,app_category2.categoryName as 'categoryLevel2Name'
     ,app_category3.categoryName as 'categoryLevel3Name'
+    ,cateLevel1 as 'categoryLevel1'
+    ,cateLevel2 as 'categoryLevel2'
+    ,cateLevel3 as 'categoryLevel3'
     ,interfaceLanguage
-
+    ,supportRom
+    ,appInfo
+    ,logoLocPath
+    ,flatformId
+    ,status
     from app_info
     left join app_status as app_status_flatform on app_info.flatformId = app_status_flatform.id
     left join app_status as app_status_status on app_info.status= app_status_status.id
@@ -130,6 +136,9 @@
     left join app_category as app_category2 on app_info.cateLevel2 = app_category2.id
     left join app_category as app_category3 on app_info.cateLevel3 = app_category3.id
     <where>
+      <if test="params.id!=null and params.id!='' ">
+        and app_info.id=${params.id}
+      </if>
       <if test="params.querySoftwareName!=null and params.querySoftwareName!='' ">
         and softwareName like '%${params.querySoftwareName}%'
       </if>

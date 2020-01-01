@@ -386,10 +386,6 @@ public class AppVersion implements Serializable {
         setVersionNo(pageInfo.getVersionNo());
         setVersionInfo(pageInfo.getVersionInfo());
         setVersionSize(pageInfo.getVersionSize());
-        Date now = new Date();
-        setCreate_time(now);
-        setUpdate_time(now);
-
     }
     public AppVersion(){
 

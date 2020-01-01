@@ -672,8 +672,7 @@ public class AppInfo implements Serializable {
         setAppInfo(pageInfo.getAppInfo());
         setSoftwareSize(pageInfo.getSoftwareSize());
         setInterfaceLanguage(pageInfo.getInterfaceLanguage());
-        setCreate_time(null);
-        setUpdate_time(null);
+        setSupportRom(pageInfo.getSupportROM());
 
     }
 

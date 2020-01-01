@@ -28,9 +28,8 @@
         <div class="col-md-12">
           <div class="col-middle">
             <div class="text-center">
-              <h1 class="error-number">403</h1>
-              <h2>正在跳转<span >3</span>   对不起,访问出错，可能是您提交了错误的请求</h2>
-              <h2>   ${errorInfo}</h2>
+              <h1 class="error-number">200</h1>
+              <h2>正在跳转<span >3</span>   ${result}</h2>
               <p>请返回到 <a href="${pageContext.request.contextPath }/webapp/WEB-INF/jsp/index.jsp">系统入口</a>
               </p>
             </div>

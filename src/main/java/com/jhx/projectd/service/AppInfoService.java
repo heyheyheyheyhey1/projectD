@@ -38,6 +38,7 @@ public class AppInfoService implements AppInfoMapper {
 
     @Override
     public int updateByPrimaryKey(AppInfo record) {
+        appInfoMapper.updateByPrimaryKey(record);
         return 0;
     }
 

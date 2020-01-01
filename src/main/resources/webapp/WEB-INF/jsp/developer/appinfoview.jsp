@@ -38,7 +38,7 @@
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input class="form-control col-md-7 col-xs-12" 
-              	value="${appInfo.supportROM}" type="text" readonly="readonly">
+              	value="${appInfo.supportRom}" type="text" readonly="readonly">
             </div>
           </div>
           <div class="item form-group">
@@ -103,11 +103,11 @@
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
 			 <c:choose> 
-				  <c:when test="${appInfo.logoPicPath == null || appInfo.logoPicPath == ''}">   
+				  <c:when test="${appInfo.logoLocPath == null || appInfo.logoLocPath == ''}">
 				    	暂无
 				  </c:when> 
 				  <c:otherwise>   
-				    <img src="${appInfo.logoPicPath }?m=1" width="100px;"/> 
+				    <img src="${pageContext.request.contextPath }${appInfo.logoLocPath}" style="width: 100px;height: 100px;"/>
 				  </c:otherwise> 
               </c:choose> 
             </div>

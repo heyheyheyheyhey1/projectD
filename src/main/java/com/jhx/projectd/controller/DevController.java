@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -174,20 +173,20 @@ public class DevController {
         pageInfo.setDevId(devUser.getId());
         MultipartFile multipartFile = pageInfo.getA_logoPicPath();
         if (multipartFile==null||!UploadFileUtils.isImage(pageInfo.getA_logoPicPath())) {
-            model.addAttribute("fileUploadError","你没有上传图片文件嗷");
-            return "developer/appinfoadd";
+            model.addAttribute("errorInfo","你没有上传图片文件嗷");
+            return "403";
         }
         if (appInfoService.selectByAPKName(pageInfo.getAPKName()).size()!=0){
-            model.addAttribute("fileUploadError","注意APKName嗷");
-            return "developer/appinfoadd";
+            model.addAttribute("errorInfo","注意APKName嗷");
+            return "403";
         }
 
         System.out.println("文件大小"+pageInfo.getA_logoPicPath().getSize());
         String downloadPath = UploadFileUtils.saveUploadfile(pageInfo.getA_logoPicPath());
         appInfoService.insert(new AppInfo(pageInfo,downloadPath));
-        model.addAttribute("fileUploadError","上传完成了嗷");
+        model.addAttribute("result","上传完成了嗷");
 
-        return "developer/appinfoadd";
+        return "200";
     }
 
     @GetMapping("flatform/app/appversionadd")
@@ -209,9 +208,9 @@ public class DevController {
         appVersionService.insert(new AppVersion(pageInfo,downloadLink));
         model.addAttribute("devUserSession",devUser);
         model.addAttribute("appVersionList",appVersionService.selectFullInfoByAppId(pageInfo.getAppId()));
-        model.addAttribute("fileUploadError","添加版本成功!");
+        model.addAttribute("result","添加版本成功!");
         model.addAttribute("appId",pageInfo.getAppId());
-        return "developer/appversionadd";
+        return "200";
     }
 
     @ResponseBody
@@ -230,8 +229,77 @@ public class DevController {
     }
 
     @RequestMapping("flatform/app/appview")
-    public String viewApp(@RequestParam("appId")Integer id){
+    public String viewApp(Model model,@RequestParam("appId")Integer id,HttpServletRequest request){
+        DevUser devUser =devUserService.selectByIdFromSession(request.getSession());
+        model.addAttribute("devUserSession",devUser);
+        Map map= new HashMap();
+        map.put("id",id);
+        List <HashMap<String,String>> list = appInfoService.selectByParams(map);
+        if(list.size()!=0){
+            model.addAttribute("appInfo",list.get(0));
+        }
+        else {
+            return "403";
+        }
+        model.addAttribute("appVersionList",appVersionService.selectFullInfoByAppId(id));
+
         return "developer/appinfoview";
     }
+    @RequestMapping("flatform/app/appinfomodify")
+    public String appModify(Model model,@RequestParam("appId")Integer id,HttpServletRequest request){
+        DevUser devUser =devUserService.selectByIdFromSession(request.getSession());
+        model.addAttribute("devUserSession",devUser);
+        Map map= new HashMap();
+        map.put("id",id);
+        List <HashMap<String,String>> list = appInfoService.selectByParams(map);
+        if(list.size()!=0){
+            model.addAttribute("appInfo",list.get(0));
+        }
+        else {
+            return "403";
+        }
+        return "developer/appinfomodify";
+    }
+    @RequestMapping("flatform/app/appinfomodifysave")
+    public String appModifySave(Model model, @ModelAttribute AddNewAppPageInfo pageInfo, HttpServletRequest request) throws IOException{
+        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
+        model.addAttribute("devUserSession",devUser);
+        MultipartFile multipartFile = pageInfo.getA_logoPicPath();
+        System.out.println(multipartFile.getSize());
+        if (multipartFile.getSize()!=0&&!UploadFileUtils.isImage(pageInfo.getA_logoPicPath())) {
+            model.addAttribute("errorInfo","你没有上传图片文件或者上传的不是图片文件嗷");
+            return "403";
+        }
+        System.out.println("文件大小"+pageInfo.getA_logoPicPath().getSize());
+        String downloadPath=null;
+        if (multipartFile.getSize()!=0){
+            downloadPath = UploadFileUtils.saveUploadfile(pageInfo.getA_logoPicPath());
+        }
+        AppInfo newApp =new AppInfo(pageInfo,downloadPath);
+        newApp.setDevId(devUser.getId());
+        newApp.setId(pageInfo.getAppId());
+        appInfoService.updateByPrimaryKey(newApp);
+        model.addAttribute("result","上传完成了嗷");
 
+        return "200";
+    }
+
+
+
+    @ResponseBody
+    @RequestMapping("flatform/app/delimg")
+    public Map<String,String> delImg(@RequestParam("id")Integer id){
+        Map <String,String> map = new HashMap<>();
+        AppInfo appInfo = appInfoService.selectByPrimaryKey(id);
+        if (appInfo==null||appInfo.getDevId()!=id){
+            map.put("status","failed");
+            map.put("info","没这app或者你不是这个app与开发者不对应");
+        }
+        appInfo.setLogoPicPath("");
+        appInfo.setLogoLocPath("");
+        appInfoService.updateByPrimaryKey(appInfo);
+        map.put("status","ok");
+        map.put("info","");
+        return map;
+    }
 }

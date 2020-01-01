@@ -1,11 +1,11 @@
 function  loadCategoryLevel(pid,cl,categoryLevel){
 	$.ajax({
 		type:"GET",//请求类型
-		url:"categorylevellist.json",//请求的url
+		url:"categorylevellist",//请求的url
 		data:{pid:pid},//请求参数
 		dataType:"json",//ajax接口（请求url）返回的数据类型
 		success:function(data){//data：返回数据（json对象）
-			
+			console.log(data)
 			$("#"+categoryLevel).html("");
 			var options = "<option value=\"\">--请选择--</option>";
 			for(var i = 0; i < data.length; i++){
@@ -26,20 +26,19 @@ function  loadCategoryLevel(pid,cl,categoryLevel){
 function delfile(id){
 	$.ajax({
 		type:"GET",//请求类型
-		url:"delfile.json",//请求的url
-		data:{id:id,flag:'logo'},//请求参数
-		dataType:"json",//ajax接口（请求url）返回的数据类型
+		url:"delimg",//请求的url
+		data:{id:id},//请求参数
 		success:function(data){//data：返回数据（json对象）
-			if(data.result == "success"){
+			if(data.status == "ok"){
 				alert("删除成功！");
 				$("#uploadfile").show();
 				$("#logoFile").html('');
-			}else if(data.result == "failed"){
-				alert("删除失败！");
+			}else {
+				alert("操作失败"+data.info)
 			}
 		},
 		error:function(data){//当访问时候，404，500 等非200的错误状态码
-			alert("请求错误！");
+			alert("请求错误！"+data);
 		}
 	});  
 }
@@ -48,9 +47,8 @@ $(function(){
 	//动态加载所属平台列表
 	$.ajax({
 		type:"GET",//请求类型
-		url:"datadictionarylist.json",//请求的url
-		data:{tcode:"APP_FLATFORM"},//请求参数
-		dataType:"json",//ajax接口（请求url）返回的数据类型
+		url:"queryFlatformList",//请求的url
+		data:{tCode:2},//请求参数
 		success:function(data){//data：返回数据（json对象）
 			var fid = $("#fid").val();
 			$("#flatformId").html("");
@@ -111,14 +109,16 @@ $(function(){
 	
 	
 	//LOGO图片---------------------
-	var logoPicPath = $("#logoPicPath").val();
+	var logoLocPath = $("#logoLocPath").val();
 	var id = $("#id").val();
-	if(logoPicPath == null || logoPicPath == "" ){
+	if(logoLocPath == null || logoLocPath == "" ){
 		$("#uploadfile").show();
 	}else{
-		$("#logoFile").append("<p><img src=\""+logoPicPath+"?m="+Math.random()+"\" width=\"100px;\"/> &nbsp;&nbsp;"+
-							"<a href=\"javascript:;\" onclick=\"delfile('"+id+"');\">删除</a></p>");
-		
+		// $("#logoFile").append("<p><img src=\""+logoPicPath+"?m="+Math.random()+"\" width=\"100px;\"/> &nbsp;&nbsp;"+
+		// 					"<a href=\"javascript:;\" onclick=\"delfile('"+id+"');\">删除</a></p>");
+		let filePath=window.location.host+logoLocPath
+		console.log(filePath)
+		$("#logoFile").append(`<p><img src='${logoLocPath}'></p>`+"<a href=\"javascript:;\" onclick=\"delfile('"+id+"');\">删除</a></p>")
 	}
 
 });
