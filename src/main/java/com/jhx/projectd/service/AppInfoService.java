@@ -1,6 +1,7 @@
 package com.jhx.projectd.service;
 
 import com.jhx.projectd.entity.AppInfo;
+import com.jhx.projectd.entity.AppVersion;
 import com.jhx.projectd.mapper.AppInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,4 +52,15 @@ public class AppInfoService implements AppInfoMapper {
     public List<HashMap<String,Object>> selectByParams(Map<String,String> params) {
         return appInfoMapper.selectByParams(params);
     }
+
+    @Override
+    public List<HashMap<String, Object>> selectByParam2(Map<String, String> params) {
+        return appInfoMapper.selectByParam2(params);
+    }
+
+    @Override
+    public int updateByAidAndVid(int aid, int vid, int status) {
+        return appInfoMapper.updateByAidAndVid(aid,vid,status);
+    }
+
 }

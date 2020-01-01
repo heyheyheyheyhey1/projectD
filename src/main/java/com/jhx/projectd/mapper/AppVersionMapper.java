@@ -49,4 +49,6 @@ public interface AppVersionMapper {
     int deleteByAppId(Integer id);
     List<AppVersion> selectByAppId(Integer id);
     List<HashMap<String,Object>> selectFullInfoByAppId(Integer appId);
+
+    List<AppVersion> selectByVersionId(int aid, int vid);
 }
