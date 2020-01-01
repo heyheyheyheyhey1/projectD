@@ -99,4 +99,10 @@
     desc
   </select>
 
+  <select id="selectByVersionId" resultMap="BaseResultMap">
+    select versionNo,versionSize,versionInfo,downloadLink,apkFileName
+    from app_version
+    JOIN app_info ON app_info.versionId = app_version.id
+    where app_version.id = ${vid} and app_info.id = ${aid}
+  </select>
 </mapper>

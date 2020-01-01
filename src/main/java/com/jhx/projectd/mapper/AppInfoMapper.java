@@ -1,6 +1,7 @@
 package com.jhx.projectd.mapper;
 
 import com.jhx.projectd.entity.AppInfo;
+import com.jhx.projectd.entity.AppVersion;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
@@ -51,4 +52,9 @@ public interface AppInfoMapper {
     List<AppInfo> selectByAPKName(@Param("name") String name);
 
     List<HashMap<String,Object>> selectByParams(@Param("params")Map<String,String> params);
+
+    List<HashMap<String,Object>> selectByParam2(@Param("params")Map<String,String> params);
+
+    int updateByAidAndVid(int aid,int vid,int status);
+
 }

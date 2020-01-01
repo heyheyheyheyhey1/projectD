@@ -1,13 +1,7 @@
 package com.jhx.projectd.controller;
 
-import com.jhx.projectd.entity.AdminUser;
-import com.jhx.projectd.entity.AppCategory;
-import com.jhx.projectd.entity.AppInfo;
-import com.jhx.projectd.entity.AppStatus;
-import com.jhx.projectd.service.AdminUserService;
-import com.jhx.projectd.service.AppInfoService;
-import com.jhx.projectd.service.AppStatusService;
-import com.jhx.projectd.service.AppCategoryService;
+import com.jhx.projectd.entity.*;
+import com.jhx.projectd.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
@@ -34,6 +28,8 @@ public class ManageController {
     private AppCategoryService appCategoryService;
     @Autowired
     private AppInfoService appInfoService;
+    @Autowired
+    private AppVersionService appVersionService;
     @GetMapping("login")
     public String getAdminLogin(){
         return "backendlogin";
@@ -79,9 +75,9 @@ public class ManageController {
     }
     @GetMapping("backend/app/list")
     public String getAppList(Model model,HttpServletRequest request){
-        System.out.println("开始进入backend/app/list！");
         HttpSession session = request.getSession();
         if (session.getAttribute("adminId")== null) return "redirect:/manager/login";
+        System.out.println("开始进入backend/app/list！");
         Integer adminId=Integer.parseInt(session.getAttribute("adminId").toString());
         List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
         //List<AppStatus> appStatuses = appStatusService.selectByValue2(2);
@@ -93,13 +89,13 @@ public class ManageController {
         return "backend/applist";
     }
     @PostMapping("backend/app/list")
-    public String appSearch(Model model,HttpServletRequest request, @ModelAttribute Map<String,String> pageInfo){
-        System.out.println("============================================");
-        System.out.println("开始查询未审核名单!");
+    public String appSearch(Model model,HttpServletRequest request, @RequestParam  HashMap<String,String> pageInfo){
         HttpSession session = request.getSession();
         if (session.getAttribute("adminId")== null) return "redirect:/manager/login";
-        pageInfo.put("queryStatusId",String.valueOf(2));
+        System.out.println("============================================");
+        System.out.println("开始查询未审核名单!");
         System.out.println(pageInfo.toString());
+        pageInfo.put("queryStatusId",String.valueOf(2));
         List<HashMap<String,Object>> appListColumns = appInfoService.selectByParams(pageInfo);
         List<AppCategory> appCategories = appCategoryService.selectByLevel(1);
         model.addAttribute("appInfoList",appListColumns);
@@ -113,8 +109,82 @@ public class ManageController {
         //model.addAttribute("pages",)
         return "backend/applist";
     }
+    @GetMapping("backend/app/check")
+    public String appCheck(Model model,HttpServletRequest request,
+                           @RequestParam(value = "aid",defaultValue = "0")int aid,
+                           @RequestParam(value = "vid",defaultValue = "0")int vid){
+        HttpSession session = request.getSession();
+        if (session.getAttribute("adminId")== null) return "redirect:/manager/login";
+        System.out.println("============================================");
+        System.out.println("开始审核!");
+        System.out.println("aid is : " +aid+"。。。vid is : "+vid );
+        session.setAttribute("aid",aid);
+        session.setAttribute("vid",vid);
+        Integer adminId=Integer.parseInt(session.getAttribute("adminId").toString());
+
+        Map<String,String> pageInfo=new HashMap<>();
+        pageInfo.put("queryAid",String.valueOf(aid));
+        pageInfo.put("queryVid",String.valueOf(vid));
+        List<HashMap<String,Object>> list=appInfoService.selectByParam2(pageInfo);
+        System.out.println(list.toString());
+
+        List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
+        //List<AppInfo> appInfos = appInfoService.selectByIdAndVersionId(aid,vid);
+        List<AppVersion> appVersion = appVersionService.selectByVersionId(aid,vid);
+        System.out.println(appVersion.toString());
+        model.addAttribute("userSession",adminUsers.get(0));
+        model.addAttribute("appInfo",list.get(0));
+        model.addAttribute("appVersion",appVersion.get(0));
+
+        return "backend/appcheck";
+    }
+
+    @PostMapping("backend/app/checksave")
+    public String appCheckSave(Model model,@RequestParam(value = "status",defaultValue = "")String status,
+                HttpServletRequest request){
+        HttpSession session = request.getSession();
+        if (session.getAttribute("adminId")== null) return "redirect:/manager/login";
+        System.out.println("审核进行中！");
+        System.out.println(status);
+        Integer aid=Integer.parseInt(session.getAttribute("aid").toString());
+        Integer vid=Integer.parseInt(session.getAttribute("vid").toString());
+        Integer adminId=Integer.parseInt(session.getAttribute("adminId").toString());
+        if(status.equals("3"))
+        {
+            int statusAfter = Integer.parseInt(status);
+            int change = appInfoService.updateByAidAndVid(aid,vid,statusAfter);
+            if(change == 0)
+                System.out.println(" Id 为："+aid+"和 versionId 为："+vid+"的数据审核通过失败！");
+            if(change == 1)
+                System.out.println(" Id 为："+aid+"和 versionId 为："+vid+"的数据审核通过成功！");
+        }
+        else if(status.equals("13"))
+        {
+            int statusAfter = Integer.parseInt(status);
+            int change = appInfoService.updateByAidAndVid(aid,vid,statusAfter);
+            if(change == 0)
+                System.out.println("更新 Id 为："+aid+"和 versionId 为："+vid+"的的数据审核不通过失败！");
+            if(change == 1)
+                System.out.println("更新 Id 为："+aid+"和 versionId 为："+vid+"的的数据审核不通过成功！");
+        }
+        Map<String,String> pageInfo=new HashMap<>();
+        pageInfo.put("queryAid",String.valueOf(aid));
+        pageInfo.put("queryVid",String.valueOf(vid));
+        List<HashMap<String,Object>> list=appInfoService.selectByParam2(pageInfo);
+        System.out.println(list.toString());
+
+        List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
+        //List<AppInfo> appInfos = appInfoService.selectByIdAndVersionId(aid,vid);
+        List<AppVersion> appVersion = appVersionService.selectByVersionId(aid,vid);
+        System.out.println(appVersion.toString());
+        model.addAttribute("userSession",adminUsers.get(0));
+        model.addAttribute("appInfo",list.get(0));
+        model.addAttribute("appVersion",appVersion.get(0));
+
+        return "backend/appcheck";
+    }
     @ResponseBody
-    @GetMapping("backend/app/categorylevellist.json")
+    @PostMapping("backend/app/categorylevellist.json")
     public List<AppCategory> getCategory(@RequestParam(value = "pid",defaultValue = "0")int pid){
         return appCategoryService.selectByParentId(pid);
     }

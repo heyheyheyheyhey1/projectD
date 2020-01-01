@@ -156,6 +156,48 @@
     </where>
 
   </select>
+  <select id="selectByParam2" resultType="java.util.HashMap">
+
+    select app_info.id as 'id',APKName,softwareSize,softwareName,download as downloads,versionNo,versionId
+    ,app_status_flatform.valueName as 'flatformName'
+    ,app_status_status.valueName as 'statusName'
+    ,app_status_status.id as 'status'
+    ,app_category1.categoryName as 'categoryLevel1Name'
+    ,app_category2.categoryName as 'categoryLevel2Name'
+    ,app_category3.categoryName as 'categoryLevel3Name'
+    ,interfaceLanguage
+    ,supportRom as supportROM
+    ,appInfo
+    ,logoPicPath
+
+    from app_info
+    left join app_status as app_status_flatform on app_info.flatformId = app_status_flatform.id
+    left join app_status as app_status_status on app_info.status= app_status_status.id
+    left join app_version on app_info.versionId = app_version.id
+    left join app_category as app_category1 on app_info.cateLevel1 = app_category1.id
+    left join app_category as app_category2 on app_info.cateLevel2 = app_category2.id
+    left join app_category as app_category3 on app_info.cateLevel3 = app_category3.id
+    <where>
+      <if test="params.queryAid!=null and params.queryAid!=''">
+        and app_info.id = ${params.queryAid}
+      </if>
+      <if test="params.queryVid!=null and params.queryVid!=''">
+        and versionId= ${params.queryVid}
+      </if>
+    </where>
+  </select>
+
+  <update id="updateByAidAndVid" parameterType="java.lang.Integer" >
+    update app_info set status = ${status}
+    <where>
+      <if test="aid!=null and aid!=''">
+        and id = ${aid}
+      </if>
+      <if test="vid!=null and vid!=''">
+        and versionId  = ${vid}
+      </if>
+    </where>
+  </update>
 
 
 </mapper>

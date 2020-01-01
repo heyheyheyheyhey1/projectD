@@ -114,8 +114,8 @@
           </div>
         	<div class="form-group">
         		<div class="col-md-6 col-md-offset-3">
-        		<button id="status" type="submit" name="status" value="2" class="btn btn-success">审核通过</button>
-        		<button id="status" type="submit" name="status" value="3" class="btn btn-success">审核不通过</button>
+        		<button id="status" type="submit" name="status" value="3" class="btn btn-success">审核通过</button>
+        		<button id="status" type="submit" name="status" value="13" class="btn btn-success">审核不通过</button>
           		<button type="button" class="btn btn-primary" id="back">返回</button>
         		</div>
      		</div>

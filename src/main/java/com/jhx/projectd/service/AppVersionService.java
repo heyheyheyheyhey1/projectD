@@ -55,4 +55,9 @@ public class AppVersionService implements AppVersionMapper {
         return appVersionMapper.selectFullInfoByAppId(appId);
     }
 
+    @Override
+    public List<AppVersion> selectByVersionId(int aid, int vid) {
+        return appVersionMapper.selectByVersionId(aid,vid);
+    }
+
 }
