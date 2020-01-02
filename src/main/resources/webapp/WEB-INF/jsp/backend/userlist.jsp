@@ -19,7 +19,7 @@
 			    <ul>
 					<li>
 						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">开发者用户名称</label>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">开发者名称</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<input name="queryDevName" type="text" class="form-control col-md-7 col-xs-12" value="${pageInfo.queryDevName}">
 							</div>
@@ -27,7 +27,7 @@
 					</li>
 					<li>
 						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">开发者用户邮箱</label>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">开发者邮箱</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<input name="queryDevEmail" type="text" class="form-control col-md-7 cDol-xs-12" value="${pageInfo.queryDevEmail}">
 							</div>

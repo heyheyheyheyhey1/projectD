@@ -83,7 +83,11 @@
 											</li>
 										</c:if>
 										<c:if test="${devUserSession.status==23}">
-											<li><a href="devApply">开发者用户审核不通过</a>
+											<li><a href="devApply">开发者权限审核不通过,点击此处重新申请</a>
+											</li>
+										</c:if>
+										<c:if test="${devUserSession.status==24}">
+											<li><a href="javascript:;">您的账户已经被禁用</a>
 											</li>
 										</c:if>
 										<li><a href="javascript:;">个人账户信息维护</a>
@@ -103,6 +107,10 @@
 										</c:if>
 										<c:if test="${devUserSession.status==23}">
 											<li><a href="javascript:;">开发者用户审核失败,暂时不能app维护</a>
+											</li>
+										</c:if>
+										<c:if test="${devUserSession.status==24}">
+											<li><a href="javascript:;">你已的账户经被禁用,暂时不能app维护</a>
 											</li>
 										</c:if>
 									</ul></li>

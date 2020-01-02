@@ -122,8 +122,8 @@ public class DevController {
             return "403";
         }
         DevApply apply = new DevApply();
-        devUser.setStatus(DevApply.STATUS_WAITING_REVIEW);
-        apply.setStatus(DevApply.STATUS_WAITING_REVIEW);
+        devUser.setStatus(AppStatus.STATUS_WAITING_REVIEW);
+        apply.setStatus(AppStatus.STATUS_WAITING_REVIEW);
         apply.setDevId(devUser.getId());
         apply.setApplyInfo(applyInfo.trim());
         devApplyService.insert(apply);
@@ -133,7 +133,10 @@ public class DevController {
     @GetMapping("flatform/app/list")
     public String devAppList(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
-        if (devUser==null) return "/";
+        if (devUser==null||devUser.getStatus()!=AppStatus.STATUS_PERMITTED) {
+            model.addAttribute("errorInfo","你没有权限!");
+            return "403";
+        }
         model.addAttribute("devUserSession",devUser);
         model.addAttribute("statusList",appStatusService.selectByTypeCode(1));
         model.addAttribute("flatFormList",appStatusService.selectByTypeCode(2));

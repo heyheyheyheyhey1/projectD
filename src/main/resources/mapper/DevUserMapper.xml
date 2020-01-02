@@ -89,9 +89,10 @@
     select dev_user.id as 'id',devName,devPassword,devEmail,devInfo,dev_user.status as userstatus
     ,app_status_status.valueName as 'statusName'
     ,app_status_status.id as 'status'
-
+    ,applyInfo
     from dev_user
     left join app_status as app_status_status on dev_user.status= app_status_status.id
+    left join dev_apply on dev_user.id= dev_apply.devId
     <where>
       <if test="params.queryDid!=null and params.queryDid!=''">
         and dev_user.id = ${params.queryDid}
@@ -103,9 +104,12 @@
         and devEmail like '%${params.queryDevEmail}%'
       </if>
       <if test="params.queryStatusId!=null and params.queryStatusId!=''">
-        and status = ${params.queryStatusId}
+        and dev_user.status = ${params.queryStatusId}
       </if>
     </where>
+    order by dev_user.id
+    desc 
+
   </select>
 
   <update id="updateByDid" parameterType="java.lang.Integer" >

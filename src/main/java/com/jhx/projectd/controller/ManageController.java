@@ -233,6 +233,7 @@ public class ManageController {
 
 
     //===========================================开发者资质审核管理==============================================================
+
     @GetMapping("backend/user/list")
     public String getUserList(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -242,6 +243,7 @@ public class ManageController {
         List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
         //List<AppStatus> appStatuses = appStatusService.selectByValue2(2);
         model.addAttribute("userSession", adminUsers.get(0));
+        model.addAttribute("statusList",appStatusService.selectByTypeCode(3));
         return "backend/userlist";
     }
 
@@ -346,8 +348,8 @@ public class ManageController {
         System.out.println("开始进入backend/user/list！");
         Integer adminId = Integer.parseInt(session.getAttribute("adminId").toString());
         List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
-        //List<AppStatus> appStatuses = appStatusService.selectByValue2(2);
         model.addAttribute("userSession", adminUsers.get(0));
+        model.addAttribute("statusList",appStatusService.selectByTypeCode(3));
         return "backend/userinfolist";
     }
 
@@ -363,7 +365,6 @@ public class ManageController {
         System.out.println("开始查询所有开发者名单!");
         System.out.println(pageInfo.toString());
         List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
-
         List<HashMap<String, Object>> list = devUserService.selectByParam2(pageInfo);
         PageInfo<HashMap<String, Object>> pages = new PageInfo<>();
         pages.setList(sub(list, currentPageNo, pageSize));
@@ -376,13 +377,52 @@ public class ManageController {
         System.out.println("当前页是：" + currentPageNo);
         System.out.println("分页数据：");
         System.out.println(pages.getList());
-
+        model.addAttribute("statusList",appStatusService.selectByTypeCode(3));
         model.addAttribute("userSession", adminUsers.get(0));
         model.addAttribute("devTemp", pages.getList());
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("pages", pages);
         return "backend/userinfolist";
     }
+    @ResponseBody
+    @GetMapping("backend/user/disable")
+    public HashMap<String,String> disableUser(@RequestParam("devId") Integer id){
+        DevUser devUser=devUserService.selectByPrimaryKey(id);
+        HashMap<String,String> map=new HashMap<String, String>();
+
+        if (devUser==null){
+            map.put("status","failed");
+            map.put("info","没这个用户啊");
+            return map;
+        }
+        devUser.setStatus(AppStatus.STATUS_DISABLE);
+        devUserService.updateByPrimaryKey(devUser);
+        map.put("status","ok");
+        map.put("info","操作成功");
+        return map;
+    }
+
+    @ResponseBody
+    @GetMapping("backend/user/enable")
+    public HashMap<String,String> enableUser(@RequestParam("devId") Integer id ){
+        DevUser devUser=devUserService.selectByPrimaryKey(id);
+        HashMap<String,String> map=new HashMap<String, String>();
+        if (devUser==null){
+            map.put("status","failed");
+            map.put("info","没这个用户啊");
+            return map;
+        }
+        devUser.setStatus(AppStatus.STATUS_PERMITTED);
+        devUserService.updateByPrimaryKey(devUser);
+        map.put("status","ok");
+        map.put("info","操作成功");
+        return map;
+    }
+//    @ResponseBody
+//    @GetMapping("backend/user/getStatusList")
+//    public List<AppStatus> getStatusList(){
+//        return appStatusService.selectByTypeCode(3);
+//    }
     @GetMapping("backend/user/userinfomodify")
     public String userInfoModify(Model model,HttpServletRequest request,
                                  @RequestParam(value = "devId",defaultValue = "0")String devId){
