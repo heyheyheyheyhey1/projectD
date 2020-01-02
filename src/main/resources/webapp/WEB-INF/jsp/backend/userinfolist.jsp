@@ -2,21 +2,19 @@
 	pageEncoding="UTF-8"%>
 <%@include file="common/header.jsp"%>
 <div class="clearfix"></div>
-<div class="row">
-
-	<div class="col-md-12">
-		<div class="x_panel">
-			<div class="x_title">
-				<h2>
-					开发者用户 审核列表 <i class="fa fa-user"></i><small>${userSession.userName}
-						- 您可以通过搜索或者其他的筛选项对开发者用户的信息进行审核操作。^_^</small>
-				</h2>
-				<div class="clearfix"></div>
-			</div>
-			<div class="x_content">
-				<form method="post" action="list">
-					<input type="hidden" name="pageIndex" value="1" />
-			    <ul>
+<div class="col-md-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				开发者用户 审核列表 <i class="fa fa-user"></i><small>${userSession.userName}
+				- 您可以通过搜索或者其他的筛选项对开发者用户的信息进行审核操作。^_^</small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<form method="post" action="list">
+				<input type="hidden" name="pageIndex" value="1" />
+				<ul>
 					<li>
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">开发者用户名称</label>
@@ -29,7 +27,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">开发者用户邮箱</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<input name="queryDevEmail" type="text" class="form-control col-md-7 cDol-xs-12" value="${pageInfo.queryDevEmail}">
+								<input name="queryDevName" type="text" class="form-control col-md-7 cDol-xs-12" value="${pageInfo.queryDevEmail}">
 							</div>
 						</div>
 					</li>
@@ -44,33 +42,33 @@
 		<div class="x_content">
 			<p class="text-muted font-13 m-b-30"></p>
 			<div id="datatable-responsive_wrapper"
-				class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+				 class="dataTables_wrapper form-inline dt-bootstrap no-footer">
 				<div class="row">
 					<div class="col-sm-12">
 						<table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
-							cellspacing="0" width="100%" role="grid" aria-describedby="datatable-responsive_info" style="width: 100%;">
+							   cellspacing="0" width="100%" role="grid" aria-describedby="datatable-responsive_info" style="width: 100%;">
 							<thead>
-								<tr role="row">
-									<th class="sorting_asc" tabindex="0"
-										aria-controls="datatable-responsive" rowspan="1" colspan="1"
-										style="width: 70px;" aria-label="First name: activate to sort column descending"
-										aria-sort="ascending">开发者用户名称</th>
-									<th class="sorting" tabindex="0"
-										aria-controls="datatable-responsive" rowspan="1" colspan="1"
-										style="width: 10px;"
-										aria-label="Last name: activate to sort column ascending">
-										邮箱</th>
-									<th class="sorting" tabindex="0"
-										aria-controls="datatable-responsive" rowspan="1" colspan="1"
-										style="width: 30px;"
-										aria-label="Last name: activate to sort column ascending">
-										状态</th>
-									<th class="sorting" tabindex="0"
-										aria-controls="datatable-responsive" rowspan="1" colspan="1"
-										style="width: 30px;"
-										aria-label="Last name: activate to sort column ascending">
-										操作</th>
-								</tr>
+							<tr role="row">
+								<th class="sorting_asc" tabindex="0"
+									aria-controls="datatable-responsive" rowspan="1" colspan="1"
+									style="width: 70px;" aria-label="First name: activate to sort column descending"
+									aria-sort="ascending">开发者用户名称</th>
+								<th class="sorting" tabindex="0"
+									aria-controls="datatable-responsive" rowspan="1" colspan="1"
+									style="width: 10px;"
+									aria-label="Last name: activate to sort column ascending">
+									邮箱</th>
+								<th class="sorting" tabindex="0"
+									aria-controls="datatable-responsive" rowspan="1" colspan="1"
+									style="width: 30px;"
+									aria-label="Last name: activate to sort column ascending">
+									状态</th>
+								<th class="sorting" tabindex="0"
+									aria-controls="datatable-responsive" rowspan="1" colspan="1"
+									style="width: 30px;"
+									aria-label="Last name: activate to sort column ascending">
+									操作</th>
+							</tr>
 							</thead>
 							<tbody>
 								<c:forEach var="devList" items="${devTemp }" varStatus="status">
@@ -79,9 +77,28 @@
 										<td>${devList.devEmail }</td>
 										<td>${devList.statusName }</td>
 										<td>
-										<button type="button" class="btn btn-default checkUser"
-											devtmpid="${devList.id }" status="${devList.userstatus }"
-											data-toggle="tooltip" data-placement="top" title="" data-original-title="查看并审核APP">审核</button>
+										
+										
+										<div class="btn-group">
+                      <button type="button" class="btn btn-danger">点击操作</button>
+                      <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a class="addVersion" devid="${devList.id }" data-toggle="tooltip" data-placement="top" title="" data-original-title="新增开发者信息">新增开发者信息</a>
+                        </li>
+                        <li><a class="modifyVersion"
+							   				devid="${devList.id }" devname="${devList.devName }" devemail="${devList.devEmail }"
+											statusname="${devList.status }" devinfo="${devList.devInfo }"
+											data-toggle="tooltip" data-placement="top" title="" data-original-title="修改开发者信息">修改开发者信息</a>
+                        </li>
+                        <li><a  class="modifyAppInfo" 
+											appinfoid="${appInfo.id }" status="${appInfo.status }" statusname="${appInfo.statusName }"
+											data-toggle="tooltip" data-placement="top" title="" data-original-title="修改APP基础信息">修改</a></li>
+						<li><a  class="deleteApp" devid='${devList.id}'  devname="${devList.devName }" data-toggle="tooltip" data-placement="top" title="" data-original-title="删除开发者基本信息">删除</a></li>
+                      </ul>
+                    </div>
 										</td>
 									</tr>
 								</c:forEach>
@@ -99,7 +116,6 @@
 							<c:if test="${pages.totalPageCount > 0}">
 								${pages.currentPageNo }/${pages.totalPageCount }页
 							</c:if>
-						</div>
 					</div>
 					<div class="col-sm-7">
 						<div class="dataTables_paginate paging_simple_numbers"
@@ -141,4 +157,4 @@
 </div>
 <%@include file="common/footer.jsp"%>
 <script src="${pageContext.request.contextPath }/statics/localjs/rollpage.js"></script>
-<script src="${pageContext.request.contextPath }/statics/localjs/userlist.js"></script>
+<script src="${pageContext.request.contextPath }/statics/localjs/appinfolist.js"></script>

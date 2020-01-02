@@ -66,9 +66,9 @@
                       <li><a href="javascript:;">广告推广</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 用户管理 <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-edit"></i>开发者用户管理 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="javascript:;">后台用户管理</a></li>
+                      <li><a href="${pageContext.request.contextPath }/manager/backend/user/listinfo">开发者用户管理</a></li>
                       <li><a href="${pageContext.request.contextPath }/manager/backend/user/list">开发者资质审核</a></li>
                     </ul>
                   </li>

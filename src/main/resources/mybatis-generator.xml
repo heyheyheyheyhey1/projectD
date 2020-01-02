@@ -34,9 +34,9 @@
 
         <!-- jdbc连接 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.2.116:3306/project?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC"
+                        connectionURL="jdbc:mysql://localhost:3306/project?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC"
                         userId="root"
-                        password="101800" >
+                        password="999999999" >
 
             <property name="nullCatalogMeansCurrent" value="true" />
         </jdbcConnection>

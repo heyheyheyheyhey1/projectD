@@ -89,6 +89,10 @@
       <if test="params.queryDevName!=null and params.queryDevName!='' ">
         and devName like '%${params.queryDevName}%'
       </if>
+
+      <if test="params.queryDevName!=null and params.queryDevName!='' ">
+        and devEmail like '%${params.queryDevEmail}%'
+      </if>
       <if test="params.queryStatusId!=null and params.queryStatusId!=''">
         and status = ${params.queryStatusId}
       </if>
