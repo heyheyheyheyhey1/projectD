@@ -37,4 +37,10 @@ public class DevApplyService implements DevApplyMapper {
         devApplyMapper.updateByPrimaryKey(record);
         return 0;
     }
+
+    @Override
+    public int updateByDevId(int devId, int statusAfter) {
+        return devApplyMapper.updateByDevId(devId,statusAfter);
+    }
+
 }

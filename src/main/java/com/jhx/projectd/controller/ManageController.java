@@ -34,6 +34,8 @@ public class ManageController {
     private AppVersionService appVersionService;
     @Autowired
     private DevUserService devUserService;
+    @Autowired
+    private DevApplyService devApplyService;
 
     @GetMapping("login")
     public String getAdminLogin() {
@@ -309,6 +311,7 @@ public class ManageController {
         System.out.println("审核进行中！");
         System.out.println(status);
         Integer did = Integer.parseInt(session.getAttribute("did").toString());
+        int devId = did;
         if (status.equals("22")) {
             int statusAfter = Integer.parseInt(status);
             int change = devUserService.updateByDid(did,statusAfter);
@@ -319,6 +322,7 @@ public class ManageController {
             }
             if (change == 1) {
                 System.out.println(" 更新 Id 为：" + did  + "的数据审核通过成功！");
+                devApplyService.updateByDevId(devId,statusAfter);
                 model.addAttribute("result", "开发者审核通过成功！");
                 return "200";
             }
@@ -332,6 +336,7 @@ public class ManageController {
             }
             if (change == 1) {
                 System.out.println(" 更新 Id 为：" + did + "的数据审核不通过成功！");
+                devApplyService.updateByDevId(devId,statusAfter);
                 model.addAttribute("result", "开发者审核不通过成功！");
                 return "200";
             }
@@ -426,15 +431,4 @@ public class ManageController {
          }
         return "backend/userinfolist";
      }
-    //@PostMapping("backend/user/userinfomodify")
-    //public String userInfoModify(Model model,HttpServletRequest request,
-    //                             @RequestParam HashMap<String, String> pageInfo){
-    //    HttpSession session = request.getSession();
-    //    if (session.getAttribute("adminId") == null) return "redirect:/manager/login";
-    //    System.out.println("开始进入backend/user/listinfo！");
-    //    Integer adminId = Integer.parseInt(session.getAttribute("adminId").toString());
-    //    System.out.println("============================================");
-    //    //System.out.println("开始修改id为"+devId+"的开发者信息!");
-    //    return "backend/userinfomodify";
-    //}
 }
