@@ -63,4 +63,12 @@
     select id, devId, create_time, update_time, `status`, applyInfo
     from dev_apply
   </select>
+  <update id="updateByDevId" parameterType="java.lang.Integer" >
+    update dev_user set status = ${statusAfter}
+    <where>
+      <if test="devId!=null and devId!=''">
+        and id = ${devId}
+      </if>
+    </where>
+  </update>
 </mapper>

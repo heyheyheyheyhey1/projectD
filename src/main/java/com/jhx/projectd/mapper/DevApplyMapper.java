@@ -43,4 +43,5 @@ public interface DevApplyMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(DevApply record);
+    int updateByDevId(int devId,int statusAfter);
 }
