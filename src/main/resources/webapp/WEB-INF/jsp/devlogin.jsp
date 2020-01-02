@@ -60,7 +60,7 @@
     </div>
     <script>
       document.getElementById("btn_create_account").onclick=()=>{
-        self.location="/create"
+        self.location="/dev/create"
       }
 
 

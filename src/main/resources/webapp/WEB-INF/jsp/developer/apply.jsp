@@ -5,74 +5,9 @@
 <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
-      <div class="x_title">
-        <h2>新增APP版本信息 <i class="fa fa-user"></i><small>${devUserSession.devName}</small></h2>
-            <div class="clearfix"></div>
-      </div>
-      <div class="x_title">
-            <h2>历史版本列表</h2>
-          <div class="clearfix"></div>
-      </div>
       <div class="x_content1">
       <div class="clearfix"></div>
 	  <p class="text-muted font-13 m-b-30"></p>
-		<div id="datatable-responsive_wrapper"
-			class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-			<div class="row">
-				<div class="col-sm-12">
-					<table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
-						cellspacing="0" width="100%" role="grid" aria-describedby="datatable-responsive_info" style="width: 100%;">
-						<thead>
-							<tr role="row">
-								<th class="sorting_asc" tabindex="0"
-									aria-controls="datatable-responsive" rowspan="1" colspan="1"
-									style="width: 70px;" aria-label="First name: activate to sort column descending"
-									aria-sort="ascending">软件名称</th>
-								<th class="sorting" tabindex="0"
-									aria-controls="datatable-responsive" rowspan="1" colspan="1"
-									style="width: 10px;"
-									aria-label="Last name: activate to sort column ascending">
-									版本号</th>
-								<th class="sorting" tabindex="0"
-									aria-controls="datatable-responsive" rowspan="1" colspan="1"
-									style="width: 90px;"
-									aria-label="Last name: activate to sort column ascending">
-									版本大小(单位:M)</th>
-								<th class="sorting" tabindex="0"
-									aria-controls="datatable-responsive" rowspan="1" colspan="1"
-									style="width: 50px;"
-									aria-label="Last name: activate to sort column ascending">
-									发布状态</th>
-								<th class="sorting" tabindex="0"
-									aria-controls="datatable-responsive" rowspan="1" colspan="1"
-									style="width: 50px;"
-									aria-label="Last name: activate to sort column ascending">
-									APK文件下载</th>
-								<th class="sorting" tabindex="0"
-									aria-controls="datatable-responsive" rowspan="1" colspan="1"
-									style="width: 50px;"
-									aria-label="Last name: activate to sort column ascending">
-									最新更新时间</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="appVersion" items="${appVersionList }" varStatus="status">
-								<tr role="row" class="odd">
-									<td tabindex="0" class="sorting_1">${appVersion.appName}</td>
-									<td>${appVersion.versionNo }</td>
-									<td>${appVersion.versionSize }</td>
-									<td>${appVersion.publishStatusName }</td>
-									<td>
-									<a href="${pageContext.request.contextPath }${appVersion.downloadLink}" download="${appVersion.apkFileName}">${appVersion.apkFileName }</a>
-									</td>
-									<td><fmt:formatDate value="${appVersion.update_time }" pattern="yyyy-MM-dd"/></td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
         <div class="clearfix"></div>
         <div class="x_title">
             <h2>新增版本信息</h2>
@@ -85,7 +20,6 @@
         <div class="x_content" style="display: block;">
          <br>
         <form class="form-horizontal form-label-left" action="appversionadd" method="post" enctype="multipart/form-data">
-           <input type="hidden" name="appId"  value="${appId}">
           <div class="item form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">版本号 <span class="required">*</span>
             </label>

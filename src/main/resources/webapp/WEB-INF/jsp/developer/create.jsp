@@ -32,25 +32,27 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form action="dologin" method="post">
+            <form action="create" method="post">
               <h1>创建账号</h1>
               <div>
-                <input type="text" class="form-control" name="devCode" placeholder="请输入用户名" required="" />
+                <input type="text" class="form-control" name="devName" placeholder="请输入用户名" required="" />
               </div>
               <div>
-                <input type="text" class="form-control" name="devCode" placeholder="请输入用户名" required="" />
+                <input type="number" class="form-control" name="devCode" placeholder="开发编码" required="" />
+              </div>
+              <div>
+                <input type="text" class="form-control" name="devEmail" placeholder="你的邮箱" required="" />
               </div>
               <div>
                 <input type="password" class="form-control" name="devPassword" placeholder="请输入密码" required="" />
               </div>
               <span>${error }</span>
               <div>
-              	<button type="submit" class="btn btn-success">登     录</button>
+              	<button type="submit" class="btn btn-success">提交</button>
               	<button type="reset" class="btn btn-default">重　填</button>
+              	<button type="reset" class="btn btn-default" id="btn_back">返回</button>
               </div>
-              <button id="btn_create_account" class="btn btn-default">申请账号</button>
               <div class="clearfix"></div>
-
               <div class="separator">
                 <div>
                   <p>©2019 All Rights Reserved. </p>
@@ -62,11 +64,9 @@
       </div>
     </div>
     <script>
-      document.getElementById("btn_create_account").onclick=()=>{
-        self.location="/create"
+      document.getElementById("btn_back").onclick=()=>{
+        history.go(-1)
       }
-
-
     </script>
   </body>
 </html>
