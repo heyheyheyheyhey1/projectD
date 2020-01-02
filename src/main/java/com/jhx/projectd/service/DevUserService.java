@@ -21,12 +21,19 @@ public class DevUserService implements DevUserMapper {
 
     @Override
     public int insert(DevUser record) {
+        devUserMapper.insert(record);
         return 0;
     }
 
     @Override
     public DevUser selectByPrimaryKey(Integer id) {
         return devUserMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public DevUser selectByDevCode(Integer code) {
+        return  devUserMapper.selectByDevCode(code);
+
     }
 
     @Override

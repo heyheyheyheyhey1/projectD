@@ -72,8 +72,20 @@
 										class="fa fa-chevron-down"></span>
 								</a>
 									<ul class="nav child_menu">
-										<li><a href="javascript:;">APP开发者账户申请</a>
-										</li>
+
+
+										<c:if test="${devUserSession.status==21}">
+											<li><a href="javascript:;">开发者资格待审核</a>
+											</li>
+										</c:if>
+										<c:if test="${devUserSession.status==22}">
+											<li><a href="javascript:;">您已是开发者</a>
+											</li>
+										</c:if>
+										<c:if test="${devUserSession.status==23}">
+											<li><a href="requestDev">开发者用户审核不通过</a>
+											</li>
+										</c:if>
 										<li><a href="javascript:;">个人账户信息维护</a>
 										</li>
 									</ul></li>
@@ -81,8 +93,18 @@
 										class="fa fa-chevron-down"></span>
 								</a>
 									<ul class="nav child_menu">
-										<li><a href="${pageContext.request.contextPath }/dev/flatform/app/list">APP维护</a>
-										</li>
+										<c:if test="${devUserSession.status==21}">
+											<li><a href="javascript:;">开发者资格待审核,暂时不能app维护</a>
+											</li>
+										</c:if>
+										<c:if test="${devUserSession.status==22}">
+											<li><a href="${pageContext.request.contextPath }/dev/flatform/app/list">app管理</a>
+											</li>
+										</c:if>
+										<c:if test="${devUserSession.status==23}">
+											<li><a href="javascript:;">开发者用户审核失败,暂时不能app维护</a>
+											</li>
+										</c:if>
 									</ul></li>
 							</ul>
 						</div>

@@ -28,7 +28,6 @@ public class DevController {
     AppInfoService appInfoService;
     @Autowired
     AppVersionService appVersionService;
-
     @GetMapping("login")
     public String devLogin(){
         return "devlogin";
@@ -48,6 +47,36 @@ public class DevController {
         }
     }
 
+    @GetMapping("create")
+    public String create(){
+        return "developer/create";
+    }
+
+    @PostMapping("create")
+    public String create_post(Model model,@RequestParam HashMap<String,String> params){
+        String devName = params.get("devName");
+        String devPassword = params.get("devPassword");
+        String devEmail = params.get("devEmail");
+        Integer devCode = Integer.parseInt(params.get("devCode"));
+        if (devCode==null){
+            model.addAttribute("error","没有填写开发者编码");
+            return "developer/create";
+        }
+        DevUser devUser=devUserService.selectByDevCode(devCode);
+        if (devUser!=null){
+            model.addAttribute("error","开发者编码已经被用过了!!!!!");
+            return "developer/create";
+        }
+        devUser=new DevUser();
+        devUser.setDevCode(devCode);
+        devUser.setDevEmail(devEmail);
+        devUser.setDevName(devName);
+        devUser.setDevPassword(devPassword);
+        devUserService.insert(devUser);
+        model.addAttribute("error","创建成功!");
+        return "developer/create";
+    }
+
     @GetMapping("logout")
     public String doLogin(Model model, HttpServletRequest request){
         request.getSession().removeAttribute("devId");
@@ -63,10 +92,15 @@ public class DevController {
             return "/";
         }
         model.addAttribute("devUserSession",devUser);
+        System.out.println("登录用户的状态为 ===  "+devUser.getStatus());
         return "developer/main";
 
     }
 
+    @GetMapping("flatform/app/requestDev")
+    public String requestDev(){
+        return "developer/apply";
+    }
     @GetMapping("flatform/app/list")
     public String devAppList(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
