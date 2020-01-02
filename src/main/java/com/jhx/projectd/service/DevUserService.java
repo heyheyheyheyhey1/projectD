@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class DevUserService implements DevUserMapper {
     @Autowired
@@ -48,6 +51,15 @@ public class DevUserService implements DevUserMapper {
         return devUserMapper.selectByDevCodeAndPassword(devCode,password);
     }
 
+    @Override
+    public List<HashMap<String, Object>> selectByParam2(Map<String, String> params) {
+        return devUserMapper.selectByParam2(params);
+    }
+
+    @Override
+    public int updateByDid(int did,int statusAfter) {
+        return devUserMapper.updateByDid(did,statusAfter);
+    }
 
 
     public DevUser selectByIdFromSession(HttpSession session){
