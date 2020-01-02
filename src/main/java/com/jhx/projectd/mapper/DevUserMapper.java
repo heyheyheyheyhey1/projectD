@@ -1,7 +1,11 @@
 package com.jhx.projectd.mapper;
 
 import com.jhx.projectd.entity.DevUser;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface DevUserMapper {
     /**
@@ -46,4 +50,6 @@ public interface DevUserMapper {
     int updateByPrimaryKey(DevUser record);
 
     List<DevUser> selectByDevCodeAndPassword(String devCode, String password);
+    List<HashMap<String,Object>> selectByParam2(@Param("params") Map<String,String> params);
+    int updateByDid(int did,int statusAfter);
 }
