@@ -62,6 +62,11 @@ public class DevUserService implements DevUserMapper {
         return devUserMapper.updateByDid(did,statusAfter);
     }
 
+    @Override
+    public int updateAllByDid(Map<String, String> params) {
+        return devUserMapper.updateAllByDid(params);
+    }
+
 
     public DevUser selectByIdFromSession(HttpSession session){
         if (session.getAttribute("devId")==null) {

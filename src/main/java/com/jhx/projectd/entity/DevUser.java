@@ -75,8 +75,6 @@ public class DevUser implements Serializable {
      * @mbg.generated
      */
     private String devInfo;
-
-
     private Integer status;
 
     /**
