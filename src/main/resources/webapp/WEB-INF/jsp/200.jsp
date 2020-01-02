@@ -44,6 +44,11 @@
           timeEl.innerHTML=timeEl.innerHTML-1
           if (timeEl.innerHTML==0){
             history.go(-1)
+            // location.reload();
+            var referLink = document.createElement('a')
+            referLink.href = url;
+            document.body.appendChild(referLink);
+            referLink.click();
           }
       },1000)
     </script>
