@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,11 @@ public class DevController {
     AppInfoService appInfoService;
     @Autowired
     AppVersionService appVersionService;
+    @Autowired
+    DevApplyService devApplyService ;
+
+
+
     @GetMapping("login")
     public String devLogin(){
         return "devlogin";
@@ -73,6 +79,11 @@ public class DevController {
         devUser.setDevName(devName);
         devUser.setDevPassword(devPassword);
         devUserService.insert(devUser);
+        DevApply devApply = new DevApply();
+        devApply.setDevId(devUserService.selectByDevCode(devCode).getId());
+        devApply.setApplyInfo("系统自动生成");
+        devApply.setStatus(21);
+        devApplyService.insert(devApply);
         model.addAttribute("error","创建成功!");
         return "developer/create";
     }
@@ -95,11 +106,29 @@ public class DevController {
         System.out.println("登录用户的状态为 ===  "+devUser.getStatus());
         return "developer/main";
 
+
     }
 
-    @GetMapping("flatform/app/requestDev")
-    public String requestDev(){
+    @GetMapping("flatform/app/devApply")
+    public String requestDev(Model model,HttpServletRequest request){
+        model.addAttribute("devUserSession",devUserService.selectByIdFromSession(request.getSession()));
         return "developer/apply";
+    }
+    @PostMapping("flatform/app/devApply")
+    public String devApply(Model model,@RequestParam String applyInfo,HttpServletRequest request){
+        DevUser devUser =devUserService.selectByIdFromSession(request.getSession());
+        if (devUser.getStatus()!=23){
+            model.addAttribute("errorInfo","您的申请正在被审核或者您已经是开发者");
+            return "403";
+        }
+        DevApply apply = new DevApply();
+        devUser.setStatus(DevApply.STATUS_WAITING_REVIEW);
+        apply.setStatus(DevApply.STATUS_WAITING_REVIEW);
+        apply.setDevId(devUser.getId());
+        apply.setApplyInfo(applyInfo.trim());
+        devApplyService.insert(apply);
+        devUserService.updateByPrimaryKey(devUser);
+        return "200";
     }
     @GetMapping("flatform/app/list")
     public String devAppList(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {

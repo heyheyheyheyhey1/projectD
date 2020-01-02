@@ -187,7 +187,7 @@
                       <ul class="dropdown-menu" role="menu">
                         <li>
                         	<c:choose>
-											<c:when test="${appInfo.status == 3}">
+											<c:when test="${appInfo.status == 9 || appInfo.status == 3}">
 												<a class="saleSwichOpen" saleSwitch="open" appinfoid=${appInfo.id }  appsoftwarename=${appInfo.softwareName } data-toggle="tooltip" data-placement="top" title="" data-original-title="恭喜您，您的审核已经通过，您可以点击上架发布您的APP">上架</a>
 											</c:when>
 											<c:when test="${appInfo.status == 1}">

@@ -38,11 +38,12 @@ public class DevUserService implements DevUserMapper {
 
     @Override
     public List<DevUser> selectAll() {
-        return null;
+        return devUserMapper.selectAll();
     }
 
     @Override
     public int updateByPrimaryKey(DevUser record) {
+        devUserMapper.updateByPrimaryKey(record);
         return 0;
     }
 

@@ -3,9 +3,10 @@ package com.jhx.projectd.service;
 import com.jhx.projectd.entity.DevApply;
 import com.jhx.projectd.mapper.DevApplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class DevApplyService implements DevApplyMapper {
     @Autowired
     DevApplyMapper devApplyMapper;
@@ -22,16 +23,18 @@ public class DevApplyService implements DevApplyMapper {
 
     @Override
     public DevApply selectByPrimaryKey(Integer id) {
-        return null;
+        return devApplyMapper.selectByPrimaryKey(id);
+
     }
 
     @Override
     public List<DevApply> selectAll() {
-        return null;
+        return devApplyMapper.selectAll();
     }
 
     @Override
     public int updateByPrimaryKey(DevApply record) {
+        devApplyMapper.updateByPrimaryKey(record);
         return 0;
     }
 }

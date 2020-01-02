@@ -83,7 +83,7 @@
 											</li>
 										</c:if>
 										<c:if test="${devUserSession.status==23}">
-											<li><a href="requestDev">开发者用户审核不通过</a>
+											<li><a href="devApply">开发者用户审核不通过</a>
 											</li>
 										</c:if>
 										<li><a href="javascript:;">个人账户信息维护</a>
