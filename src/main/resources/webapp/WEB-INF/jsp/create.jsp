@@ -33,7 +33,10 @@
         <div class="animate form login_form">
           <section class="login_content">
             <form action="dologin" method="post">
-              <h1>APP开发者平台</h1>
+              <h1>创建账号</h1>
+              <div>
+                <input type="text" class="form-control" name="devCode" placeholder="请输入用户名" required="" />
+              </div>
               <div>
                 <input type="text" class="form-control" name="devCode" placeholder="请输入用户名" required="" />
               </div>
