@@ -72,11 +72,36 @@ public class DevController {
     }
 
     @PostMapping("flatform/app/list")
-    public String getAappList(Model model, @RequestParam HashMap <String ,String> pageInfo,HttpServletRequest request) {
+    public String getAappList(Model model, @RequestParam HashMap <String ,String> pageInfo,HttpServletRequest request,
+                              @RequestParam(value = "pageIndex",defaultValue = "1")int currentPageNo,
+                              @RequestParam(value = "pageSize",defaultValue = "5")int pageSize) {
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
         System.out.println(pageInfo.toString());
         if (devUser==null) return "redirect:/";
         pageInfo.put("devId",String.valueOf(devUser.getId()));
+
+
+        List<HashMap<String,Object>> list=appInfoService.selectByParams(pageInfo);
+        PageInfo<HashMap<String,Object>> pages = new PageInfo<>();
+        pages.setList(sub(list,currentPageNo,pageSize));
+        int totalCount = list.size();
+        int totalPageCount = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
+        pages.setCurrentPageNo(currentPageNo);
+        pages.setTotalPageCount(totalPageCount);
+        pages.setTotalCount(totalCount);
+        System.out.println("总页数" + totalPageCount);
+        System.out.println("当前页是：" + currentPageNo);
+        System.out.println("分页数据：");
+        System.out.println(pages.getList());
+
+
+        if (list.size()!=0){
+            System.out.println(list.size());
+        }
+
+        model.addAttribute("pages",pages);
+        model.addAttribute("appInfoList",pages.getList());
+        model.addAttribute("pageInfo",pageInfo);
 
         model.addAttribute("devUserSession",devUser);
         model.addAttribute("statusList",appStatusService.selectByTypeCode(1));
@@ -85,18 +110,14 @@ public class DevController {
         model.addAttribute("categoryLevel2List",appCategoryService.selectByParentId(pageInfo.get("queryCategoryLevel1Id")!=null&&pageInfo.get("queryCategoryLevel1Id")!=""?Integer.parseInt(pageInfo.get("queryCategoryLevel1Id")):2));
         model.addAttribute("categoryLevel3List",appCategoryService.selectByParentId(pageInfo.get("queryCategoryLevel2Id")!=null&&pageInfo.get("queryCategoryLevel2Id")!=""?Integer.parseInt(pageInfo.get("queryCategoryLevel2Id")):3));
 
-        List<HashMap<String,Object>> list=appInfoService.selectByParams(pageInfo);
-
-        if (list.size()!=0){
-            System.out.println(list.size());
-        }
-
-        model.addAttribute("appInfoList",list);
-        model.addAttribute("pageInfo",pageInfo);
 
         return "developer/appinfolist";
     }
-
+    public List<HashMap<String,Object>> sub(List<HashMap<String,Object>> s,int totalPageCount,int pageSize){
+        int start=(totalPageCount-1)*pageSize;
+        int end=start+pageSize <s.size()?start+pageSize:s.size();
+        return s.subList(start,end);
+    }
     @ResponseBody
     @GetMapping("flatform/app/categorylevellist")
     public List<AppCategory>  catgrlevellist(@RequestParam("pid")Integer pid,HttpServletResponse response){

@@ -3,7 +3,6 @@ package com.jhx.projectd.controller;
 import com.jhx.projectd.entity.*;
 import com.jhx.projectd.service.*;
 import com.jhx.projectd.utils.PageInfo;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Appinfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
