@@ -6,13 +6,13 @@
 	<div class="x_panel">
 		<div class="x_title">
 			<h2>
-				开发者用户 审核列表 <i class="fa fa-user"></i><small>${userSession.userName}
-				- 您可以通过搜索或者其他的筛选项对开发者用户的信息进行审核操作。^_^</small>
+				开发者用户 信息管理维护 <i class="fa fa-user"></i><small>${userSession.userName}
+				- 您可以通过搜索或者其他的筛选项对开发者用户的信息进行修改、删除等管理操作。^_^</small>
 			</h2>
 			<div class="clearfix"></div>
 		</div>
 		<div class="x_content">
-			<form method="post" action="list">
+			<form method="post" action="listinfo">
 				<input type="hidden" name="pageIndex" value="1" />
 				<ul>
 					<li>
@@ -27,11 +27,11 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">开发者用户邮箱</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<input name="queryDevName" type="text" class="form-control col-md-7 cDol-xs-12" value="${pageInfo.queryDevEmail}">
+								<input name="queryDevEmail" type="text" class="form-control col-md-7 cDol-xs-12" value="${pageInfo.queryDevEmail}">
 							</div>
 						</div>
 					</li>
-					<li><button type="submit" class="btn btn-primary"> 查 &nbsp;&nbsp;&nbsp;&nbsp;询 </button></li>
+					<li><button type="submit" class="btn btn-primary" id="btn_search"> 查询 </button></li>
 				</ul>
 			</form>
 		</div>
@@ -88,14 +88,14 @@
                       <ul class="dropdown-menu" role="menu">
                         <li><a class="addVersion" devid="${devList.id }" data-toggle="tooltip" data-placement="top" title="" data-original-title="新增开发者信息">新增开发者信息</a>
                         </li>
-                        <li><a class="modifyVersion"
+                        <li><a class="modifyUserInfo"
 							   				devid="${devList.id }" devname="${devList.devName }" devemail="${devList.devEmail }"
-											statusname="${devList.status }" devinfo="${devList.devInfo }"
+											statusname="${devList.statusname }" devinfo="${devList.devInfo }"
 											data-toggle="tooltip" data-placement="top" title="" data-original-title="修改开发者信息">修改开发者信息</a>
                         </li>
-                        <li><a  class="modifyAppInfo" 
-											appinfoid="${appInfo.id }" status="${appInfo.status }" statusname="${appInfo.statusName }"
-											data-toggle="tooltip" data-placement="top" title="" data-original-title="修改APP基础信息">修改</a></li>
+<%--                        <li><a  class="modifyUserInfo"--%>
+<%--											appinfoid="${appInfo.id }" status="${appInfo.status }" statusname="${appInfo.statusName }"--%>
+<%--											data-toggle="tooltip" data-placement="top" title="" data-original-title="修改APP基础信息">修改</a></li>--%>
 						<li><a  class="deleteApp" devid='${devList.id}'  devname="${devList.devName }" data-toggle="tooltip" data-placement="top" title="" data-original-title="删除开发者基本信息">删除</a></li>
                       </ul>
                     </div>
@@ -157,4 +157,4 @@
 </div>
 <%@include file="common/footer.jsp"%>
 <script src="${pageContext.request.contextPath }/statics/localjs/rollpage.js"></script>
-<script src="${pageContext.request.contextPath }/statics/localjs/appinfolist.js"></script>
+<script src="${pageContext.request.contextPath }/statics/localjs/userinfolist.js"></script>

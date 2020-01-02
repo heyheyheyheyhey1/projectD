@@ -232,7 +232,7 @@ public class ManageController {
     }
 
 
-    //===========================================用户管理==============================================================
+    //===========================================开发者资质审核管理==============================================================
     @GetMapping("backend/user/list")
     public String getUserList(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -338,4 +338,50 @@ public class ManageController {
         }
         return "backend/userlist";
     }
+    //===========================================开发者用户管理==============================================================
+    @GetMapping("backend/user/listinfo")
+    public String getUserListInfo(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("adminId") == null) return "redirect:/manager/login";
+        System.out.println("开始进入backend/user/list！");
+        Integer adminId = Integer.parseInt(session.getAttribute("adminId").toString());
+        List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
+        //List<AppStatus> appStatuses = appStatusService.selectByValue2(2);
+        model.addAttribute("userSession", adminUsers.get(0));
+        return "backend/userinfolist";
+    }
+
+    @PostMapping("backend/user/listinfo")
+    public String userListSearch(Model model, @RequestParam HashMap<String, String> pageInfo, HttpServletRequest request,
+                             @RequestParam(value = "pageIndex", defaultValue = "1") int currentPageNo,
+                             @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("adminId") == null) return "redirect:/manager/login";
+        System.out.println("开始进入backend/user/listinfo！");
+        Integer adminId = Integer.parseInt(session.getAttribute("adminId").toString());
+        System.out.println("============================================");
+        System.out.println("开始查询所有开发者名单!");
+        System.out.println(pageInfo.toString());
+        List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
+
+        List<HashMap<String, Object>> list = devUserService.selectByParam2(pageInfo);
+        PageInfo<HashMap<String, Object>> pages = new PageInfo<>();
+        pages.setList(sub(list, currentPageNo, pageSize));
+        int totalCount = list.size();
+        int totalPageCount = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
+        pages.setCurrentPageNo(currentPageNo);
+        pages.setTotalPageCount(totalPageCount);
+        pages.setTotalCount(totalCount);
+        System.out.println("总页数" + totalPageCount);
+        System.out.println("当前页是：" + currentPageNo);
+        System.out.println("分页数据：");
+        System.out.println(pages.getList());
+
+        model.addAttribute("userSession", adminUsers.get(0));
+        model.addAttribute("devTemp", pages.getList());
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("pages", pages);
+        return "backend/userinfolist";
+    }
+
 }
