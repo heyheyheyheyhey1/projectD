@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -138,10 +142,9 @@ public class ManageController {
 
         return "backend/appcheck";
     }
-    
     @PostMapping("backend/app/checksave")
     public String appCheckSave(Model model,@RequestParam(value = "status",defaultValue = "")String status,
-                HttpServletRequest request){
+                HttpServletRequest request,HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         if (session.getAttribute("adminId")== null) return "redirect:/manager/login";
         System.out.println("审核进行中！");
@@ -149,23 +152,50 @@ public class ManageController {
         Integer aid=Integer.parseInt(session.getAttribute("aid").toString());
         Integer vid=Integer.parseInt(session.getAttribute("vid").toString());
         Integer adminId=Integer.parseInt(session.getAttribute("adminId").toString());
+        //response.setContentType("text/html; charset=utf-8");
+        //OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
         if(status.equals("3"))
         {
             int statusAfter = Integer.parseInt(status);
             int change = appInfoService.updateByAidAndVid(aid,vid,statusAfter);
-            if(change == 0)
-                System.out.println(" Id 为："+aid+"和 versionId 为："+vid+"的数据审核通过失败！");
-            if(change == 1)
-                System.out.println(" Id 为："+aid+"和 versionId 为："+vid+"的数据审核通过成功！");
+            if(change == 0) {
+                System.out.println(" Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核通过失败！");
+                model.addAttribute("errorInfo","数据审核通过失败！");
+                return "404";
+                //String data = "<script language='javascript'>alert('数据审核通过失败'); </script>";
+                //writer.write(data);
+                //writer.close();
+                //out.("<script>alert('数据审核通过失败');</script>");
+            }
+            if(change == 1) {
+                System.out.println(" Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核通过成功！");
+                model.addAttribute("result","数据审核通过成功！");
+                return "200";
+                //out.print("<script>alert('数据审核通过成功');</script>");
+                //String data = "<script language='javascript'>alert('数据审核通过成功'); history.go(-1);" +
+                //        //"window.location.href=window.location.href;window.opener.location=window.opener.location;</script>";
+                //        "var referLink = document.createElement('a');" +
+                //        "    referLink.href = url;" +
+                //        "    document.body.appendChild(referLink);" +
+                //        "    referLink.click();</script>";
+                //writer.write(data);
+                //writer.close();
+            }
         }
         else if(status.equals("13"))
         {
             int statusAfter = Integer.parseInt(status);
             int change = appInfoService.updateByAidAndVid(aid,vid,statusAfter);
-            if(change == 0)
-                System.out.println("更新 Id 为："+aid+"和 versionId 为："+vid+"的的数据审核不通过失败！");
-            if(change == 1)
-                System.out.println("更新 Id 为："+aid+"和 versionId 为："+vid+"的的数据审核不通过成功！");
+            if(change == 0) {
+                System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的的数据审核不通过失败！");
+                model.addAttribute("errorInfo","数据审核不通过失败！");
+                return "404";
+            }
+            if(change == 1) {
+                System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的的数据审核不通过成功！");
+                model.addAttribute("result","数据审核不通过成功！");
+                return "200";
+            }
         }
         Map<String,String> pageInfo=new HashMap<>();
         pageInfo.put("queryAid",String.valueOf(aid));

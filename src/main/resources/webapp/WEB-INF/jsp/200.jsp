@@ -43,7 +43,16 @@
           let timeEl = document.getElementsByTagName("span")[0]
           timeEl.innerHTML=timeEl.innerHTML-1
           if (timeEl.innerHTML==0){
+<<<<<<< HEAD
             history.back()
+=======
+            history.go(-1)
+            // location.reload();
+            var referLink = document.createElement('a')
+            referLink.href = url;
+            document.body.appendChild(referLink);
+            referLink.click();
+>>>>>>> d6dcd2ea768cd6cb3706ebfbb83498c868376f29
           }
       },1000)
     </script>
