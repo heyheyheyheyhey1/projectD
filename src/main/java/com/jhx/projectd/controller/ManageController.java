@@ -4,6 +4,7 @@ import com.jhx.projectd.entity.*;
 import com.jhx.projectd.service.*;
 import com.jhx.projectd.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.ObjDoubleConsumer;
 
 @Controller
 @RequestMapping("/manager")
@@ -179,8 +181,6 @@ public class ManageController {
         Integer aid = Integer.parseInt(session.getAttribute("aid").toString());
         Integer vid = Integer.parseInt(session.getAttribute("vid").toString());
         Integer adminId = Integer.parseInt(session.getAttribute("adminId").toString());
-        //response.setContentType("text/html; charset=utf-8");
-        //OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
         if (status.equals("3")) {
             int statusAfter = Integer.parseInt(status);
             int change = appInfoService.updateByAidAndVid(aid, vid, statusAfter);
@@ -383,5 +383,58 @@ public class ManageController {
         model.addAttribute("pages", pages);
         return "backend/userinfolist";
     }
+    @GetMapping("backend/user/userinfomodify")
+    public String userInfoModify(Model model,HttpServletRequest request,
+                                 @RequestParam(value = "devId",defaultValue = "0")String devId){
+        HttpSession session = request.getSession();
+        if (session.getAttribute("adminId") == null) return "redirect:/manager/login";
+        System.out.println("开始进入backend/user/userinfomodify！");
+        Integer adminId = Integer.parseInt(session.getAttribute("adminId").toString());
+        System.out.println("============================================");
+        System.out.println("开始修改id为"+devId+"的开发者信息!");
+        session.setAttribute("devId",devId);
+        List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
+        Map<String,String> map = new HashMap<>();
+        map.put("queryDid",devId);
+        List<HashMap<String,Object>> pageInfo = devUserService.selectByParam2(map);
 
+        model.addAttribute("userSession", adminUsers.get(0));
+        model.addAttribute("devInfo",pageInfo.get(0));
+        return "backend/userinfomodify";
+    }
+    @PostMapping("backend/user/userinfomodifysave")
+    public String userinfomodifysave(Model model,HttpServletRequest request,
+                                     @RequestParam HashMap<String,String> pageInfo)
+     {
+         HttpSession session = request.getSession();
+         if (session.getAttribute("adminId") == null) return "redirect:/manager/login";
+         System.out.println("开始进入backend/user/userinfomodifysave！");
+         Integer adminId = Integer.parseInt(session.getAttribute("adminId").toString());
+         List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
+         System.out.println(pageInfo.toString());
+         String info = pageInfo.get("querydevInfo").trim();
+         pageInfo.put("querydevInfo",info);
+         int change = devUserService.updateAllByDid(pageInfo);
+         if(change==0){
+             System.out.println("修改id为："+pageInfo.get("querydevId")+"的数据失败！");
+             model.addAttribute("errorInfo","修改开发者信息失败！请重新修改！");
+             return "403";
+         }else if (change == 1){
+             System.out.println("修改id为："+pageInfo.get("querydevId")+"的数据成功！");
+             model.addAttribute("result","修改开发者信息成功！");
+             return "200";
+         }
+        return "backend/userinfolist";
+     }
+    //@PostMapping("backend/user/userinfomodify")
+    //public String userInfoModify(Model model,HttpServletRequest request,
+    //                             @RequestParam HashMap<String, String> pageInfo){
+    //    HttpSession session = request.getSession();
+    //    if (session.getAttribute("adminId") == null) return "redirect:/manager/login";
+    //    System.out.println("开始进入backend/user/listinfo！");
+    //    Integer adminId = Integer.parseInt(session.getAttribute("adminId").toString());
+    //    System.out.println("============================================");
+    //    //System.out.println("开始修改id为"+devId+"的开发者信息!");
+    //    return "backend/userinfomodify";
+    //}
 }

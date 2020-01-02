@@ -90,7 +90,7 @@
                         </li>
                         <li><a class="modifyUserInfo"
 							   				devid="${devList.id }" devname="${devList.devName }" devemail="${devList.devEmail }"
-											statusname="${devList.statusname }" devinfo="${devList.devInfo }"
+											statusname="${devList.statusName }" devinfo="${devList.devInfo }" status="${devList.status}"
 											data-toggle="tooltip" data-placement="top" title="" data-original-title="修改开发者信息">修改开发者信息</a>
                         </li>
 <%--                        <li><a  class="modifyUserInfo"--%>

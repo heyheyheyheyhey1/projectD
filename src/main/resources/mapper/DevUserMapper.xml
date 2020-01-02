@@ -117,4 +117,16 @@
     </where>
   </update>
 
+  <update id="updateAllByDid" parameterType="java.lang.Integer"  >
+    update dev_user set devName = '${params.querydevName}',
+    devEmail = '${params.querydevEmail}',
+    devInfo = '${params.querydevInfo}',
+    update_time = now()
+    <where>
+      <if test="params.querydevId!=null and params.querydevId!=''">
+        and id = ${params.querydevId}
+      </if>
+    </where>
+  </update>
+
 </mapper>
