@@ -4,7 +4,6 @@ import com.jhx.projectd.entity.*;
 import com.jhx.projectd.service.*;
 import com.jhx.projectd.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -66,6 +61,13 @@ public class ManageController {
         }
 
     }
+    @GetMapping("logout")
+    public String doLogin(Model model, HttpServletRequest request){
+        request.getSession().removeAttribute("adminId");
+        model.addAttribute("result","您已经成功退出登录！");
+        return "200";
+    }
+
     @GetMapping("main")
     public String getMain(Model model,HttpServletRequest request){
         HttpSession session = request.getSession();

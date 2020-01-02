@@ -48,6 +48,13 @@ public class DevController {
         }
     }
 
+    @GetMapping("logout")
+    public String doLogin(Model model, HttpServletRequest request){
+        request.getSession().removeAttribute("devId");
+        model.addAttribute("result","您已经成功退出登录！");
+        return "200";
+    }
+
     @GetMapping("flatform/app/main")
     public String devMain(Model model,HttpServletRequest request){
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
