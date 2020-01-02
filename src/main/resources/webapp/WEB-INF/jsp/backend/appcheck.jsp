@@ -106,8 +106,8 @@
 				  <c:when test="${appInfo.logoPicPath == null || appInfo.logoPicPath == ''}">   
 				    	暂无
 				  </c:when> 
-				  <c:otherwise>   
-				    <img src="${appInfo.logoPicPath }?m=1" width="100px;"/> 
+				  <c:otherwise>
+                    <img src="${pageContext.request.contextPath }${appInfo.logoLocPath}" style="width: 100px;height: 100px;"/>
 				  </c:otherwise> 
               </c:choose> 
             </div>

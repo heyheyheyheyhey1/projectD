@@ -8,17 +8,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>403</title>
+    <title>正在跳转</title>
 
     <!-- Bootstrap -->
-    <link href="${pageContext.request.contextPath }/webapp/statics/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/statics/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="${pageContext.request.contextPath }/webapp/statics/css/font-awesome.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/statics/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="${pageContext.request.contextPath }/webapp/statics/css/nprogress.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/statics/css/nprogress.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="${pageContext.request.contextPath }/webapp/statics/css/custom.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/statics/css/custom.min.css" rel="stylesheet">
   </head>
 
   <body class="nav-md">
@@ -30,7 +30,7 @@
             <div class="text-center">
               <h1 class="error-number">200</h1>
               <h2>正在跳转<span >3</span>   ${result}</h2>
-              <p>请返回到 <a href="${pageContext.request.contextPath }/webapp/WEB-INF/jsp/index.jsp">系统入口</a>
+              <p>请返回到 <a href="${pageContext.request.contextPath }/">系统入口</a>
               </p>
             </div>
           </div>
@@ -43,30 +43,25 @@
           let timeEl = document.getElementsByTagName("span")[0]
           timeEl.innerHTML=timeEl.innerHTML-1
           if (timeEl.innerHTML==0){
-<<<<<<< HEAD
-            history.back()
-=======
             history.go(-1)
-            // location.reload();
             var referLink = document.createElement('a')
             referLink.href = url;
             document.body.appendChild(referLink);
-            referLink.click();
->>>>>>> d6dcd2ea768cd6cb3706ebfbb83498c868376f29
+            referLink.click()
           }
       },1000)
     </script>
     <!-- jQuery -->
-    <script src="${pageContext.request.contextPath }/webapp/statics/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath }/statics/js/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="${pageContext.request.contextPath }/webapp/statics/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath }/statics/js/bootstrap.min.js"></script>
     <!-- FastClick -->
-    <script src="${pageContext.request.contextPath }/webapp/statics/js/fastclick.js"></script>
+    <script src="${pageContext.request.contextPath }/statics/js/fastclick.js"></script>
     <!-- NProgress -->
-    <script src="${pageContext.request.contextPath }/webapp/statics/js/nprogress.js"></script>
+    <script src="${pageContext.request.contextPath }/statics/js/nprogress.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="${pageContext.request.contextPath }/webapp/statics/js/custom.min.js"></script>
+    <script src="${pageContext.request.contextPath }/statics/js/custom.min.js"></script>
   </body>
 </html>				
 			
