@@ -378,10 +378,36 @@ public class AppVersion implements Serializable {
         this.versionInfo = versionInfo == null ? null : versionInfo.trim();
     }
     public AppVersion(AddAppVersionPageInfo pageInfo, String downloadLink) {
-        setApkFileName(pageInfo.getA_downloadLink().getOriginalFilename());
-        setAppId(pageInfo.getAppId());
-        setApkLocPath(downloadLink);
-        setDownloadLink(downloadLink);
+        setId(pageInfo.getId());
+        if (pageInfo.getA_downloadLink().getSize()!=0){
+            setApkFileName(pageInfo.getA_downloadLink().getOriginalFilename());
+        }
+        if (pageInfo.getAppId()!=null){
+            setAppId(pageInfo.getAppId());
+        }
+
+        if (downloadLink!=null){
+            setApkLocPath(downloadLink);
+            setDownloadLink(downloadLink);
+        }
+        setPublishStatus(pageInfo.getPublishStatus());
+        setVersionNo(pageInfo.getVersionNo());
+        setVersionInfo(pageInfo.getVersionInfo());
+        setVersionSize(pageInfo.getVersionSize());
+    }
+    public void updateAppVersion(AddAppVersionPageInfo pageInfo, String downloadLink) {
+        setId(pageInfo.getId());
+        if (pageInfo.getA_downloadLink().getSize()!=0){
+            setApkFileName(pageInfo.getA_downloadLink().getOriginalFilename());
+        }
+        if (pageInfo.getAppId()!=null){
+            setAppId(pageInfo.getAppId());
+        }
+
+        if (downloadLink!=null){
+            setApkLocPath(downloadLink);
+            setDownloadLink(downloadLink);
+        }
         setPublishStatus(pageInfo.getPublishStatus());
         setVersionNo(pageInfo.getVersionNo());
         setVersionInfo(pageInfo.getVersionInfo());

@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 
 public class AddAppVersionPageInfo {
+    private Integer id;
     private Integer appId;
     private String  versionNo;
     private BigDecimal versionSize;
@@ -22,6 +23,14 @@ public class AddAppVersionPageInfo {
                 ", publishStatus=" + publishStatus +
                 ", a_downloadLink=" + a_downloadLink +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getPublishStatus() {

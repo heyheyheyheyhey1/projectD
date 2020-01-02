@@ -56,5 +56,6 @@ public interface AppInfoMapper {
     List<HashMap<String,Object>> selectByParam2(@Param("params")Map<String,String> params);
 
     int updateByAidAndVid(int aid,int vid,int status);
+    int updateVersionIdByAppId(int appId,int versionId);
 
 }

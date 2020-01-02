@@ -26,7 +26,7 @@ public class AppVersionService implements AppVersionMapper {
 
     @Override
     public AppVersion selectByPrimaryKey(Integer id) {
-        return null;
+        return appVersionMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -36,6 +36,7 @@ public class AppVersionService implements AppVersionMapper {
 
     @Override
     public int updateByPrimaryKey(AppVersion record) {
+        appVersionMapper.updateByPrimaryKey(record);
         return 0;
     }
 

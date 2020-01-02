@@ -43,7 +43,7 @@
           let timeEl = document.getElementsByTagName("span")[0]
           timeEl.innerHTML=timeEl.innerHTML-1
           if (timeEl.innerHTML==0){
-            history.go(-1)
+            history.back()
           }
       },1000)
     </script>

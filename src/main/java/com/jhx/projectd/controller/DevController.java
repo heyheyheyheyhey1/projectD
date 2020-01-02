@@ -210,8 +210,48 @@ public class DevController {
         model.addAttribute("appVersionList",appVersionService.selectFullInfoByAppId(pageInfo.getAppId()));
         model.addAttribute("result","添加版本成功!");
         model.addAttribute("appId",pageInfo.getAppId());
+        List<HashMap<String,Object>>list = appVersionService.selectFullInfoByAppId(pageInfo.getAppId());
+        appInfoService.updateVersionIdByAppId(pageInfo.getAppId(),(Integer) list.get(0).get("id"));
+
         return "200";
     }
+    @PostMapping("flatform/app/appversionmodifysave")
+    public String addVersionModifySave(Model model, @ModelAttribute AddAppVersionPageInfo pageInfo, HttpServletRequest request) throws IOException {
+        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
+        model.addAttribute("devUserSession",devUser);
+        System.out.println("文件大小"+pageInfo.getA_downloadLink().getSize());
+        System.out.println("页面属性"+pageInfo.toString());
+        String downloadLink=null;
+        AppVersion version = appVersionService.selectByPrimaryKey(pageInfo.getId());
+
+        if (pageInfo.getA_downloadLink().getSize()!=0){
+            downloadLink=UploadFileUtils.saveUploadfile(pageInfo.getA_downloadLink());
+        }
+        version.updateAppVersion(pageInfo,downloadLink);
+        appVersionService.updateByPrimaryKey(version);
+        model.addAttribute("appVersionList",appVersionService.selectFullInfoByAppId(pageInfo.getAppId()));
+        model.addAttribute("appId",pageInfo.getAppId());
+        model.addAttribute("result","修改成功!");
+        List<HashMap<String,Object>>list = appVersionService.selectFullInfoByAppId(pageInfo.getAppId());
+        return "200";
+    }
+
+
+    @RequestMapping("flatform/app/appversionmodify")
+    public String versioModify(Model model,@RequestParam()HashMap<String,String> map,HttpServletRequest request){
+        DevUser devUser =devUserService.selectByIdFromSession(request.getSession());
+        model.addAttribute("devUserSession",devUser);
+        int appId=Integer.parseInt(map.get("aid"));
+        List <HashMap<String,Object>> list =appVersionService.selectFullInfoByAppId(appId);
+        if (list.size()==0){
+            model.addAttribute("errorInfo","错误的访问");
+            return "403";
+        }
+        model.addAttribute("appVersionList",list);
+        model.addAttribute("appVersion",list.get(0));
+        return "developer/appversionmodify";
+    }
+
 
     @ResponseBody
     @RequestMapping("flatform/app/delapp")
@@ -298,6 +338,23 @@ public class DevController {
         appInfo.setLogoPicPath("");
         appInfo.setLogoLocPath("");
         appInfoService.updateByPrimaryKey(appInfo);
+        map.put("status","ok");
+        map.put("info","");
+        return map;
+    }
+    @ResponseBody
+    @RequestMapping("flatform/app/delfile")
+    public Map<String,String> delFile(@RequestParam("versionId")Integer id){
+        Map <String,String> map = new HashMap<>();
+        AppVersion version = appVersionService.selectByPrimaryKey(id);
+        System.out.println("version   "+id);
+        if (version==null){
+            map.put("status","failed");
+            map.put("info","没这app或者你不是这个app与开发者不对应");
+            return map;
+        }
+        version.setDownloadLink("");
+        appVersionService.updateByPrimaryKey(version);
         map.put("status","ok");
         map.put("info","");
         return map;

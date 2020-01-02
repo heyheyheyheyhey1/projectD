@@ -105,7 +105,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
             	<input id="statusName" type="text" class="form-control col-md-7 col-xs-12"
               	name="statusName" value="${appInfo.statusName}" readonly="readonly">
-              <input name="status" value="${appInfo.status}" readonly="readonly">
+              <input name="status" value="${appInfo.status}" type="hidden" readonly="readonly">
             </div>
           </div>
           <div class="item form-group">

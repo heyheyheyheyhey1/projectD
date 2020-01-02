@@ -65,7 +65,7 @@
 									<td>
 									<a href="${appVersion.downloadLink }">${appVersion.apkFileName }</a>
 									</td>
-									<td><fmt:formatDate value="${appVersion.modifyDate }" pattern="yyyy-MM-dd"/></td>
+									<td><fmt:formatDate value="${appVersion.update_time }" pattern="yyyy-MM-dd"/></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -128,7 +128,7 @@
             <input type="hidden" id="apkLocPath" name="apkLocPath" value="${appVersion.apkLocPath}"/>
             <input type="hidden" id="apkFileName" name="apkFileName" value="${appVersion.apkFileName}"/>
 			<div id="uploadfile" style="display: none">
-				<input id="attach" type="file" class="form-control col-md-7 col-xs-12" name="attach">
+				<input id="attach" type="file" class="form-control col-md-7 col-xs-12" name="a_downloadLink">
 				<p><span style="color:red;font-weight: bold;">*注：1、大小不得超过500m.2、文件类型：apk</span></p>
 			</div>
 			<div id="apkFile"></div>

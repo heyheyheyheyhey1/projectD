@@ -52,6 +52,7 @@
     set appId = #{appId,jdbcType=INTEGER},
       versionNo = #{versionNo,jdbcType=VARCHAR},
       publishStatus = #{publishStatus,jdbcType=INTEGER},
+      
       downloadLink = #{downloadLink,jdbcType=VARCHAR},
       versionSize = #{versionSize,jdbcType=DECIMAL},
       update_time = now(),
@@ -78,6 +79,8 @@
     select id, appId, versionNo, publishStatus, downloadLink, versionSize, create_time, 
     update_time, apkLocPath, apkFileName, versionInfo
     from app_version
+    order by id
+    desc
   </select>
   <delete id="deletByAppId">
     delete  from app_version where appId= #{id}

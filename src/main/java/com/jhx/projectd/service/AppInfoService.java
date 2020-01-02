@@ -63,4 +63,10 @@ public class AppInfoService implements AppInfoMapper {
         return appInfoMapper.updateByAidAndVid(aid,vid,status);
     }
 
+    @Override
+    public int updateVersionIdByAppId(int appId, int versionId) {
+        appInfoMapper.updateVersionIdByAppId(appId,versionId);
+        return 0;
+    }
+
 }
