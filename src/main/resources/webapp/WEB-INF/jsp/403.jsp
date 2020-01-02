@@ -31,7 +31,7 @@
               <h1 class="error-number">403</h1>
               <h2>正在跳转<span >3</span>   对不起,访问出错，可能是您提交了错误的请求</h2>
               <h2>   ${errorInfo}</h2>
-              <p>请返回到 <a href="${pageContext.request.contextPath }/webapp/WEB-INF/jsp/index.jsp">系统入口</a>
+              <p>请返回到 <a href="${pageContext.request.contextPath }/">系统入口</a>
               </p>
             </div>
           </div>
@@ -44,11 +44,7 @@
           let timeEl = document.getElementsByTagName("span")[0]
           timeEl.innerHTML=timeEl.innerHTML-1
           if (timeEl.innerHTML==0){
-            history.go(-1)
-            var referLink = document.createElement('a')
-            referLink.href = url;
-            document.body.appendChild(referLink);
-            referLink.click();
+            location.href = document.referrer;
           }
       },1000)
     </script>

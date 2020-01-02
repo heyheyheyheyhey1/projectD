@@ -2,6 +2,8 @@ package com.jhx.projectd.controller;
 
 import com.jhx.projectd.entity.*;
 import com.jhx.projectd.service.*;
+import com.jhx.projectd.utils.PageInfo;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Appinfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
@@ -68,11 +70,10 @@ public class ManageController {
     @GetMapping("main")
     public String getMain(Model model,HttpServletRequest request){
         HttpSession session = request.getSession();
-        Integer adminId=Integer.parseInt(session.getAttribute("adminId").toString());
-        List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
-        if (adminUsers.size()== 0) return "/";
-
+        if (session.getAttribute("adminId")== null) return "redirect:/manager/login";
         else {
+            Integer adminId=Integer.parseInt(session.getAttribute("adminId").toString());
+            List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
             model.addAttribute("userSession",adminUsers.get(0));
             return "backend/main";
         }
@@ -92,8 +93,11 @@ public class ManageController {
 
         return "backend/applist";
     }
+
     @PostMapping("backend/app/list")
-    public String appSearch(Model model,HttpServletRequest request, @RequestParam  HashMap<String,String> pageInfo){
+    public String appSearch(Model model,HttpServletRequest request, @RequestParam  HashMap<String,String> pageInfo,
+                            @RequestParam(value = "pageIndex",defaultValue = "1")int currentPageNo,
+                            @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         HttpSession session = request.getSession();
         if (session.getAttribute("adminId")== null) return "redirect:/manager/login";
         System.out.println("============================================");
@@ -101,18 +105,33 @@ public class ManageController {
         System.out.println(pageInfo.toString());
         pageInfo.put("queryStatusId",String.valueOf(2));
         List<HashMap<String,Object>> appListColumns = appInfoService.selectByParams(pageInfo);
-        List<AppCategory> appCategories = appCategoryService.selectByLevel(1);
-        model.addAttribute("appInfoList",appListColumns);
+        PageInfo<HashMap<String,Object>> pages = new PageInfo<>();
+        pages.setList(sub(appListColumns,currentPageNo,pageSize));
+        int totalCount = appListColumns.size();
+        int totalPageCount = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
+        pages.setCurrentPageNo(currentPageNo);
+        pages.setTotalPageCount(totalPageCount);
+        pages.setTotalCount(totalCount);
+        System.out.println("总页数" + totalPageCount);
+        System.out.println("当前页是：" + currentPageNo);
+        System.out.println("分页数据：");
+        System.out.println(pages.getList());
+
+        model.addAttribute("pages",pages);
+        model.addAttribute("appInfoList",pages.getList());
         model.addAttribute("flatFormList",appStatusService.selectByTypeCode(2));
         model.addAttribute("categoryLevel1List",appCategoryService.selectByLevel(1));
-        int parentId = appCategories.get(0).getId();
         model.addAttribute("categoryLevel2List",appCategoryService.selectByParentId(pageInfo.get("queryCategoryLevel1Id")!=null&&pageInfo.get("queryCategoryLevel1Id")!=""? Integer.parseInt(pageInfo.get("queryCategoryLevel1Id")):2));
-        List<AppCategory> appCategories2 = appCategoryService.selectByParentId(parentId);
         model.addAttribute("categoryLevel3List",appCategoryService.selectByParentId(pageInfo.get("queryCategoryLevel2Id")!=null&&pageInfo.get("queryCategoryLevel2Id")!=""?Integer.parseInt(pageInfo.get("queryCategoryLevel2Id")):3));
         model.addAttribute("pageInfo",pageInfo);
-        //model.addAttribute("pages",)
         return "backend/applist";
     }
+    public List<HashMap<String,Object>> sub(List<HashMap<String,Object>> s,int totalPageCount,int pageSize){
+        int start=(totalPageCount-1)*pageSize;
+        int end=start+pageSize <s.size()?start+pageSize:s.size();
+        return s.subList(start,end);
+    }
+
     @GetMapping("backend/app/check")
     public String appCheck(Model model,HttpServletRequest request,
                            @RequestParam(value = "aid",defaultValue = "0")int aid,
@@ -161,25 +180,12 @@ public class ManageController {
             if(change == 0) {
                 System.out.println(" Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核通过失败！");
                 model.addAttribute("errorInfo","数据审核通过失败！");
-                return "404";
-                //String data = "<script language='javascript'>alert('数据审核通过失败'); </script>";
-                //writer.write(data);
-                //writer.close();
-                //out.("<script>alert('数据审核通过失败');</script>");
+                return "403";
             }
             if(change == 1) {
                 System.out.println(" Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核通过成功！");
                 model.addAttribute("result","数据审核通过成功！");
                 return "200";
-                //out.print("<script>alert('数据审核通过成功');</script>");
-                //String data = "<script language='javascript'>alert('数据审核通过成功'); history.go(-1);" +
-                //        //"window.location.href=window.location.href;window.opener.location=window.opener.location;</script>";
-                //        "var referLink = document.createElement('a');" +
-                //        "    referLink.href = url;" +
-                //        "    document.body.appendChild(referLink);" +
-                //        "    referLink.click();</script>";
-                //writer.write(data);
-                //writer.close();
             }
         }
         else if(status.equals("13"))
@@ -189,7 +195,7 @@ public class ManageController {
             if(change == 0) {
                 System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核不通过失败！");
                 model.addAttribute("errorInfo","数据审核不通过失败！");
-                return "404";
+                return "403";
             }
             if(change == 1) {
                 System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核不通过成功！");

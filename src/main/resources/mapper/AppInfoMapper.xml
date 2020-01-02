@@ -189,6 +189,7 @@
     ,supportRom as supportROM
     ,appInfo
     ,logoPicPath
+    ,logoLocPath
 
     from app_info
     left join app_status as app_status_flatform on app_info.flatformId = app_status_flatform.id
