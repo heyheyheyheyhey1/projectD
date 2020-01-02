@@ -43,30 +43,26 @@
           let timeEl = document.getElementsByTagName("span")[0]
           timeEl.innerHTML=timeEl.innerHTML-1
           if (timeEl.innerHTML==0){
-<<<<<<< HEAD
-            history.back()
-=======
             history.go(-1)
             // location.reload();
             var referLink = document.createElement('a')
             referLink.href = url;
             document.body.appendChild(referLink);
             referLink.click();
->>>>>>> d6dcd2ea768cd6cb3706ebfbb83498c868376f29
           }
       },1000)
     </script>
     <!-- jQuery -->
-    <script src="${pageContext.request.contextPath }/webapp/statics/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath }/statics/js/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="${pageContext.request.contextPath }/webapp/statics/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath }/statics/js/bootstrap.min.js"></script>
     <!-- FastClick -->
-    <script src="${pageContext.request.contextPath }/webapp/statics/js/fastclick.js"></script>
+    <script src="${pageContext.request.contextPath }/statics/js/fastclick.js"></script>
     <!-- NProgress -->
-    <script src="${pageContext.request.contextPath }/webapp/statics/js/nprogress.js"></script>
+    <script src="${pageContext.request.contextPath }/statics/js/nprogress.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="${pageContext.request.contextPath }/webapp/statics/js/custom.min.js"></script>
+    <script src="${pageContext.request.contextPath }/statics/js/custom.min.js"></script>
   </body>
 </html>				
 			

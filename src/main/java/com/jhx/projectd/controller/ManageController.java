@@ -187,12 +187,12 @@ public class ManageController {
             int statusAfter = Integer.parseInt(status);
             int change = appInfoService.updateByAidAndVid(aid,vid,statusAfter);
             if(change == 0) {
-                System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的的数据审核不通过失败！");
+                System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核不通过失败！");
                 model.addAttribute("errorInfo","数据审核不通过失败！");
                 return "404";
             }
             if(change == 1) {
-                System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的的数据审核不通过成功！");
+                System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核不通过成功！");
                 model.addAttribute("result","数据审核不通过成功！");
                 return "200";
             }
