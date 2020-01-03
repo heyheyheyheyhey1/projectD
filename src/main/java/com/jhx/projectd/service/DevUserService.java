@@ -67,6 +67,11 @@ public class DevUserService implements DevUserMapper {
         return devUserMapper.updateAllByDid(params);
     }
 
+    @Override
+    public List<HashMap<String, Object>> selectApplyInfoByParam(Map<String, String> params) {
+        return devUserMapper.selectApplyInfoByParam(params);
+    }
+
 
     public DevUser selectByIdFromSession(HttpSession session){
         if (session.getAttribute("devId")==null) {

@@ -54,4 +54,5 @@ public interface DevUserMapper {
     List<HashMap<String,Object>> selectByParam2(@Param("params") Map<String,String> params);
     int updateByDid(int did,int statusAfter);
     int updateAllByDid(@Param("params")Map<String,String> params);
+    List<HashMap<String,Object>> selectApplyInfoByParam(@Param("params")Map <String,String> params);
 }

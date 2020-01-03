@@ -264,7 +264,9 @@ public class ManageController {
         List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
 
         pageInfo.put("queryStatusId", String.valueOf(21));
-        List<HashMap<String, Object>> list = devUserService.selectByParam2(pageInfo);
+        pageInfo.put("queryApplyStatus",String.valueOf(21));
+        System.out.println(pageInfo.get("queryApplyStatus"));
+        List<HashMap<String, Object>> list = devUserService.selectApplyInfoByParam(pageInfo);
         PageInfo<HashMap<String, Object>> pages = new PageInfo<>();
         pages.setList(sub(list, currentPageNo, pageSize));
         int totalCount = list.size();
