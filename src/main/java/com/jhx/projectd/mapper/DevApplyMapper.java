@@ -1,7 +1,11 @@
 package com.jhx.projectd.mapper;
 
 import com.jhx.projectd.entity.DevApply;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface DevApplyMapper {
     /**
@@ -44,4 +48,5 @@ public interface DevApplyMapper {
      */
     int updateByPrimaryKey(DevApply record);
     int updateByDevId(int devId,int statusAfter);
+    List<HashMap<String,Object>> selectByDevId(@Param("params") Map<String,String> params);
 }

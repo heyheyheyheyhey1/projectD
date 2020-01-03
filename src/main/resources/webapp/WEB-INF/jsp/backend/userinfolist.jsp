@@ -129,6 +129,7 @@
                                                        data-toggle="tooltip" data-placement="top"
                                                        data-original-title="修改开发者信息">修改开发者信息</a>
                                                 </li>
+                                                <li><a  class="viewUser" devid=${devList.id }  data-toggle="tooltip" data-placement="top" title="" data-original-title="查看开发者基础信息以及全部申请记录">查看</a></li>
 
                                                 <li><a class="deleteApp" devid='${devList.id}'
                                                        devname="${devList.devName }" data-toggle="tooltip"

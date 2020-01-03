@@ -71,4 +71,24 @@
       </if>
     </where>
   </update>
+  <select id="selectByDevId" resultType="java.util.HashMap">
+    select dev_apply.id as 'id'
+    ,dev_apply.update_time as modifyDate
+    ,dev_apply.applyInfo as applyInfo
+    ,app_status_status.valueName as 'statusName'
+    ,app_status_status.id as 'status'
+    ,dev_user.devName as devName
+    from dev_apply
+    left join app_status as app_status_status on dev_apply.status= app_status_status.id
+    left join dev_user on dev_apply.devId=dev_user.id
+
+    <where>
+      <if test="params.queryDid!=null and params.queryDid!=''">
+        and dev_apply.devId = ${params.queryDid}
+      </if>
+    </where>
+    order by dev_apply.id
+    desc
+
+  </select>
 </mapper>
