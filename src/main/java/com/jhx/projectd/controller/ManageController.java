@@ -188,12 +188,12 @@ public class ManageController {
             int change = appInfoService.updateByAidAndVid(aid, vid, statusAfter);
             if (change == 0) {
                 System.out.println(" Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核通过失败！");
-                model.addAttribute("errorInfo", "数据审核通过失败！");
+                model.addAttribute("errorInfo", "APP审核通过失败！");
                 return "403";
             }
             if (change == 1) {
                 System.out.println(" Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核通过成功！");
-                model.addAttribute("result", "数据审核通过成功！");
+                model.addAttribute("result", "APP审核通过成功！");
                 return "200";
             }
         } else if (status.equals("13")) {
@@ -201,13 +201,15 @@ public class ManageController {
             int change = appInfoService.updateByAidAndVid(aid, vid, statusAfter);
             if (change == 0) {
                 System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核不通过失败！");
-                model.addAttribute("errorInfo", "数据审核不通过失败！");
+                model.addAttribute("errorInfo", "APP审核不通过失败！");
                 return "403";
             }
             if (change == 1) {
                 System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核不通过成功！");
-                
-                model.addAttribute("result", "数据审核不通过成功！");
+                AppVersion appVersion = appVersionService.selectByPrimaryKey(vid);
+                appVersion.setPublishStatus(AppStatus.APP_STATUS_NOT_PERMITTED);
+                appVersionService.updateByPrimaryKey(appVersion);
+                model.addAttribute("result", "APP审核不通过成功！");
                 return "200";
             }
         }
