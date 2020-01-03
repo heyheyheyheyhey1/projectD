@@ -163,5 +163,11 @@
     desc
 
   </select>
-
+  <update id="updateDevInfo" parameterType="java.util.Map">
+        update dev_user
+        set devName = #{params.devName,jdbcType=VARCHAR},
+      update_time = now(),
+      devInfo = #{params.devInfo,jdbcType=VARCHAR}
+    where id = #{params.id,jdbcType=INTEGER}
+  </update>
 </mapper>

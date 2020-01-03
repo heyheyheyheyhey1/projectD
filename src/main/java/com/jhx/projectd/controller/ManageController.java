@@ -483,6 +483,22 @@ public class ManageController {
          }
         return "backend/userinfolist";
      }
+     @ResponseBody
+     @GetMapping("backend/user/userDel")
+     public HashMap<String,String> delUser(@RequestParam("devId") Integer devId){
+        HashMap<String,String> map=new HashMap<String,String>();
+        DevUser devUser=devUserService.selectByPrimaryKey(devId);
+        if (devUser==null){
+            map.put("status","failed");
+            map.put("info","没这个人");
+            return map;
+        }
+        devUserService.deleteByPrimaryKey(devId);
+
+         map.put("status","ok");
+         map.put("info","已经删除"+String.valueOf(devId)+": "+devUser.getDevName());
+         return map;
+     }
     @GetMapping("backend/user/userview")
     public String getUserView(Model model,HttpServletRequest request,
                               @RequestParam(value = "devId",defaultValue = "0")String queryDid){

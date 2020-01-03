@@ -134,7 +134,7 @@
                                                 <li><a class="deleteApp" devid='${devList.id}'
                                                        devname="${devList.devName }" data-toggle="tooltip"
                                                        data-placement="top"
-                                                       data-original-title="删除开发者基本信息">删除</a>
+                                                       data-original-title="删除开发者基本信息"  onclick="delDevUser(${devList.id})"  >删除</a>
                                                 </li>
 
                                                 <c:if test="${devList.status==22}">

@@ -64,7 +64,7 @@
     from dev_apply
   </select>
   <update id="updateByDevId" parameterType="java.lang.Integer" >
-    update dev_apply set status = ${statusAfter}
+    update dev_apply set status = ${statusAfter},update_time = now()
     <where>
       <if test="devId!=null and devId!=''">
         and devId = ${devId}

@@ -72,3 +72,25 @@ function loadStatusList() {
             console.log(err)
         })
 }
+function delDevUser(devId) {
+    console.log("deleting "+devId)
+    axios.get(`userDel?devId=${devId}`)
+        .then(res=>{
+            console.log(res)
+            if (res.data.status!="ok"){
+                alert("操作失败")
+                console.log(res.data+res.data)
+                // location.reload()
+            }
+            else {
+                alert("操作成功")
+                console.log(res.data)
+                location.reload()
+            }
+
+        })
+        .catch(err=>{
+            alert("请求错误"+err)
+            console.log(err)
+        })
+}
