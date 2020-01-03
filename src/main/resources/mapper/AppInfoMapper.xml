@@ -222,5 +222,12 @@
     </where>
   </update>
 
+  <update id="updateStatusByAppId" parameterType="java.lang.Integer" >
+        update app_info set
+        status = ${status}
+        where
+        id = ${appId}
+  </update>
+
 
 </mapper>

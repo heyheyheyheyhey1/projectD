@@ -232,20 +232,25 @@ public class DevController {
 
     @GetMapping("flatform/app/saleSwitch")
     @ResponseBody
-    public Map<String,Object> saleSwitch(HttpServletRequest request,HttpServletResponse response,@RequestParam("appId")Integer appId){
+    public Map<String,Object> saleSwitch(HttpServletRequest request,HttpServletResponse response,@RequestParam("appId")Integer appId,@RequestParam("versionId")Integer versionId){
         DevUser devUser=devUserService.selectByIdFromSession(request.getSession());
         AppInfo appInfo = appInfoService.selectByPrimaryKey(appId);
+        AppVersion appVersion=appVersionService.selectByPrimaryKey(versionId);
         Map<String,Object> map=new HashMap<>();
 
-        if (appInfo==null||appInfo.getDevId()!=devUser.getId()){
+        if (appVersion==null||appInfo==null||appInfo.getDevId()!=devUser.getId()){
             response.setStatus(403);
             map.put("status","false");
             map.put("info","没这个爱啪啪或者爱啪啪开发者与当前开发者不对应");
             return map;
         }
+
         System.out.println("===before"+appInfo.getStatus());
         appInfo.setStatus(appInfo.getStatus()==1?9:1);
+        appVersion.setPublishStatus(appVersion.getPublishStatus()==AppStatus.APP_STATUS_ON_SALE?AppStatus.APP_STATUS_NOT_PERMITTED:AppStatus.APP_STATUS_ON_SALE);
+
         System.out.println("=====after"+appInfoService.selectByPrimaryKey(appInfo.getId()).getStatus());
+        appVersionService.updateByPrimaryKey(appVersion);
         appInfoService.updateByPrimaryKey(appInfo);
         map.put("status","ok");
         map.put("info","操作成功");
@@ -306,7 +311,7 @@ public class DevController {
         model.addAttribute("appId",pageInfo.getAppId());
         List<HashMap<String,Object>>list = appVersionService.selectFullInfoByAppId(pageInfo.getAppId());
         appInfoService.updateVersionIdByAppId(pageInfo.getAppId(),(Integer) list.get(0).get("id"));
-
+        appInfoService.updateStatusByAppId(pageInfo.getAppId(),AppStatus.APP_STATUS_WAITING_REVIEW);
         return "200";
     }
     @PostMapping("flatform/app/appversionmodifysave")

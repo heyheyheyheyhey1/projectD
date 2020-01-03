@@ -104,7 +104,7 @@ var saleSwitchAjax = function(appId,obj){
 
 	$.ajax({
 		type:"GET",
-		url:`saleSwitch?appId=${appId}`,
+		url:`saleSwitch?appId=${appId}&versionId=${obj.attr("versionId")}`,
 		dataType:"json",
 		success:function(data){
 			/*

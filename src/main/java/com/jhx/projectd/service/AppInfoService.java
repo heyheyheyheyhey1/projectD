@@ -69,4 +69,10 @@ public class AppInfoService implements AppInfoMapper {
         return 0;
     }
 
+    @Override
+    public int updateStatusByAppId(int appId, int status) {
+        appInfoMapper.updateStatusByAppId(appId,status);
+        return 0;
+    }
+
 }
