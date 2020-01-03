@@ -299,7 +299,10 @@ public class ManageController {
 
             Map<String,String> pageInfo=new HashMap<>();
             pageInfo.put("queryDid",String.valueOf(did));
-            List<HashMap<String,Object>> list=devUserService.selectByParam2(pageInfo);
+//            pageInfo.put("queryApplyStatus",)
+//            List<HashMap<String,Object>> list=devUserService.selectByParam2(pageInfo);
+            List<HashMap<String,Object>> list=devUserService.selectApplyInfoByParam(pageInfo);
+
             System.out.println(list.toString());
 
             List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);

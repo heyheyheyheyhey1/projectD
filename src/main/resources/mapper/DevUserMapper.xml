@@ -139,9 +139,9 @@
     ,dev_apply.applyInfo
     from dev_user
     left join app_status as app_status_status on dev_user.status= app_status_status.id
-    <if test="params.queryApplyStatus!=null and params.queryApplyStatus!=''">
-      left join dev_apply on dev_user.id=dev_apply.devId and dev_apply.status=${params.queryApplyStatus}
-    </if>
+
+      left join dev_apply on dev_user.id=dev_apply.devId
+
     <where>
       <if test="params.queryDid!=null and params.queryDid!=''">
         and dev_user.id = ${params.queryDid}
