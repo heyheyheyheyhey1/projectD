@@ -206,6 +206,7 @@ public class ManageController {
             }
             if (change == 1) {
                 System.out.println("更新 Id 为：" + aid + "和 versionId 为：" + vid + "的数据审核不通过成功！");
+                
                 model.addAttribute("result", "数据审核不通过成功！");
                 return "200";
             }

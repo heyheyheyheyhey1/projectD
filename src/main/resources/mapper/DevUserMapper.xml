@@ -159,7 +159,7 @@
         and dev_apply.status = ${params.queryApplyStatus}
       </if>
     </where>
-    order by dev_user.id
+    order by dev_apply.id
     desc
 
   </select>
