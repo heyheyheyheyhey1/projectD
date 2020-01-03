@@ -64,10 +64,10 @@
     from dev_apply
   </select>
   <update id="updateByDevId" parameterType="java.lang.Integer" >
-    update dev_user set status = ${statusAfter}
+    update dev_apply set status = ${statusAfter}
     <where>
       <if test="devId!=null and devId!=''">
-        and id = ${devId}
+        and devId = ${devId}
       </if>
     </where>
   </update>

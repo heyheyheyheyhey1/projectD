@@ -89,9 +89,9 @@
     select dev_user.id as 'id',devName,devPassword,devEmail,devInfo,dev_user.status as userstatus
     ,app_status_status.valueName as 'statusName'
     ,app_status_status.id as 'status'
+
     from dev_user
     left join app_status as app_status_status on dev_user.status= app_status_status.id
-
     <where>
       <if test="params.queryDid!=null and params.queryDid!=''">
         and dev_user.id = ${params.queryDid}
