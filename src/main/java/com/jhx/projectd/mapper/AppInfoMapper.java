@@ -57,5 +57,6 @@ public interface AppInfoMapper {
 
     int updateByAidAndVid(int aid,int vid,int status);
     int updateVersionIdByAppId(int appId,int versionId);
+    int updateStatusByAppId(int appId,int status);
 
 }
