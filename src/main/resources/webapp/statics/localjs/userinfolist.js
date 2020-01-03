@@ -49,6 +49,13 @@ function enableUser() {
         })
 
 }
+
+$(".viewUser").on("click",function(){
+    var obj = $(this);
+    window.location.href="userview?devId="+ obj.attr("devid");
+});
+
+
 function loadStatusList() {
     let el = document.getElementById("")
     axios.get(`delUser?devId=${id}`)

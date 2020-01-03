@@ -5,7 +5,10 @@ import com.jhx.projectd.mapper.DevApplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class DevApplyService implements DevApplyMapper {
     @Autowired
@@ -41,6 +44,11 @@ public class DevApplyService implements DevApplyMapper {
     @Override
     public int updateByDevId(int devId, int statusAfter) {
         return devApplyMapper.updateByDevId(devId,statusAfter);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> selectByDevId(Map<String, String> params) {
+        return devApplyMapper.selectByDevId(params);
     }
 
 }

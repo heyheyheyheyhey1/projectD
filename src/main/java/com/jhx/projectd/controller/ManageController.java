@@ -449,9 +449,14 @@ public class ManageController {
         Map<String,String> map = new HashMap<>();
         map.put("queryDid",devId);
         List<HashMap<String,Object>> pageInfo = devUserService.selectByParam2(map);
+        if(pageInfo.size()!=0){
+            model.addAttribute("userSession", adminUsers.get(0));
+            model.addAttribute("devInfo",pageInfo.get(0));
+        }
+        else {
+            return "403";
+        }
 
-        model.addAttribute("userSession", adminUsers.get(0));
-        model.addAttribute("devInfo",pageInfo.get(0));
         return "backend/userinfomodify";
     }
     @PostMapping("backend/user/userinfomodifysave")
@@ -494,4 +499,27 @@ public class ManageController {
          map.put("info","已经删除"+String.valueOf(devId)+": "+devUser.getDevName());
          return map;
      }
+    @GetMapping("backend/user/userview")
+    public String getUserView(Model model,HttpServletRequest request,
+                              @RequestParam(value = "devId",defaultValue = "0")String queryDid){
+        HttpSession session = request.getSession();
+        if (session.getAttribute("adminId") == null) return "redirect:/manager/login";
+        System.out.println("开始进入backend/user/userview！");
+        Integer adminId = Integer.parseInt(session.getAttribute("adminId").toString());
+        List<AdminUser> adminUsers = adminUserService.selectByAdminId(adminId);
+        Map<String,String> map = new HashMap<>();
+        map.put("queryDid",queryDid);
+        System.out.println(map.toString());
+        System.out.println(devUserService.selectByParam2(map));
+        if(map.size()!=0){
+            model.addAttribute("userSession",adminUsers.get(0));
+            model.addAttribute("devTemp",devUserService.selectByParam2(map).get(0));
+            model.addAttribute("devTempList",devApplyService.selectByDevId(map));
+        }
+        else {
+            return "403";
+        }
+        return "backend/userinfoview";
+    }
+
 }
