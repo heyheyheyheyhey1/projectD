@@ -478,6 +478,10 @@ public class DevController {
             model.addAttribute("errorInfo","没有权限的访问!");
             return "403";
         }
+        if (map.get("devName")==null||map.get("devName").equals("")){
+            model.addAttribute("errorInfo","名字不能为空啊");
+            return "403";
+        }
         devUserService.updateDevInfo(map);
 
         model.addAttribute("result","已经更新信息");

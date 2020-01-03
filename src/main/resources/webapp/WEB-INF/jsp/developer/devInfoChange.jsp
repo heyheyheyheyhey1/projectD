@@ -25,7 +25,7 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">个人介绍<span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <textarea id="devInfo" name="devInfo" required="required"
+              <textarea id="devInfo" name="devInfo"
                         placeholder="${devUserSession.devInfo}" class="form-control col-md-7 col-xs-12" value="${devUserSession.devInfo}" ></textarea>
             </div>
           </div>
