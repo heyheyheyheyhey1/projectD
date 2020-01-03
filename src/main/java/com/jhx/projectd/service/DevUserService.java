@@ -16,6 +16,7 @@ public class DevUserService implements DevUserMapper {
     private DevUserMapper devUserMapper;
     @Override
     public int deleteByPrimaryKey(Integer id) {
+        devUserMapper.deleteByPrimaryKey(id);
         return 0;
     }
 
@@ -79,5 +80,9 @@ public class DevUserService implements DevUserMapper {
             return null;
         }
         return this.selectByPrimaryKey((Integer) session.getAttribute("devId"));
+    }
+
+    public void updateDevInfo(Map<String, String> map) {
+        devUserMapper.updateDevInfo(map);
     }
 }

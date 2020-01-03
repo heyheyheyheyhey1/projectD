@@ -453,4 +453,30 @@ public class DevController {
         map.put("info","");
         return map;
     }
+
+
+    @GetMapping("devInfoChange")
+    public String devInfoChange(Model model,@RequestParam HashMap <String,String> map,HttpServletRequest request){
+        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
+        if (devUser==null){
+            model.addAttribute("errorInfo","没有权限的访问!");
+            return "403";
+        }
+        model.addAttribute("devUserSession",devUser);
+        return "developer/devInfoChange";
+
+    }
+    @PostMapping("devInfoChange")
+    public String devInfoChangeSave(Model model,@RequestParam HashMap <String,String> map,HttpServletRequest request){
+        DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
+        if (devUser==null){
+            model.addAttribute("errorInfo","没有权限的访问!");
+            return "403";
+        }
+        devUserService.updateDevInfo(map);
+
+        model.addAttribute("result","已经更新信息");
+        return "200";
+
+    }
 }
