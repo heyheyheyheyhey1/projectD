@@ -302,7 +302,14 @@ public class DevController {
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
         System.out.println("文件大小"+pageInfo.getA_downloadLink().getSize());
         System.out.println("页面属性"+pageInfo.toString());
-        String downloadLink=UploadFileUtils.saveUploadfile(pageInfo.getA_downloadLink());
+        String downloadLink=null;
+        if (pageInfo.getA_downloadLink().getSize()!=0&&UploadFileUtils.isAPK(pageInfo.getA_downloadLink())){
+            downloadLink=UploadFileUtils.saveUploadfile(pageInfo.getA_downloadLink());
+        }
+        else {
+            model.addAttribute("errorInfo","您没上传文件或者您的文件不是APK啊!");
+            return "403";
+        }
         System.out.println("文件绝对路径"+downloadLink);
         appVersionService.insert(new AppVersion(pageInfo,downloadLink));
         model.addAttribute("devUserSession",devUser);
@@ -315,7 +322,7 @@ public class DevController {
         return "200";
     }
     @PostMapping("flatform/app/appversionmodifysave")
-    public String addVersionModifySave(Model model, @ModelAttribute AddAppVersionPageInfo pageInfo, HttpServletRequest request) throws IOException {
+    public String ModifySave(Model model, @ModelAttribute AddAppVersionPageInfo pageInfo, HttpServletRequest request) throws IOException {
         DevUser devUser = devUserService.selectByIdFromSession(request.getSession());
         model.addAttribute("devUserSession",devUser);
         System.out.println("文件大小"+pageInfo.getA_downloadLink().getSize());
