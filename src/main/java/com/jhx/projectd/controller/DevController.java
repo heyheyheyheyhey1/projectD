@@ -247,7 +247,7 @@ public class DevController {
 
         System.out.println("===before"+appInfo.getStatus());
         appInfo.setStatus(appInfo.getStatus()==1?9:1);
-        appVersion.setPublishStatus(appVersion.getPublishStatus()==AppStatus.APP_STATUS_ON_SALE?AppStatus.APP_STATUS_NOT_PERMITTED:AppStatus.APP_STATUS_ON_SALE);
+        appVersion.setPublishStatus(appVersion.getPublishStatus()==AppStatus.APP_STATUS_ON_SALE?AppStatus.APP_STATUS_OFF_SALE:AppStatus.APP_STATUS_ON_SALE);
 
         System.out.println("=====after"+appInfoService.selectByPrimaryKey(appInfo.getId()).getStatus());
         appVersionService.updateByPrimaryKey(appVersion);
