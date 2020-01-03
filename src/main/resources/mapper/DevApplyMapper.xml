@@ -87,7 +87,7 @@
         and dev_apply.devId = ${params.queryDid}
       </if>
     </where>
-    order by dev_apply.id
+    order by dev_apply.update_time
     desc
 
   </select>

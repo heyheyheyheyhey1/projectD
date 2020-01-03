@@ -205,6 +205,8 @@
       <if test="params.queryVid!=null and params.queryVid!=''">
         and versionId= ${params.queryVid}
       </if>
+      order  by app_info.id
+      desc
     </where>
   </select>
 
