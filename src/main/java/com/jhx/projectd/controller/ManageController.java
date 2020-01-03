@@ -324,6 +324,7 @@ public class ManageController {
             }
             if (change == 1) {
                 System.out.println(" 更新 Id 为：" + did  + "的数据审核通过成功！");
+                System.out.println(devId+"查看数据"+statusAfter);
                 devApplyService.updateByDevId(devId,statusAfter);
                 model.addAttribute("result", "开发者审核通过成功！");
                 return "200";
@@ -338,6 +339,7 @@ public class ManageController {
             }
             if (change == 1) {
                 System.out.println(" 更新 Id 为：" + did + "的数据审核不通过成功！");
+                System.out.println(devId+"查看数据"+statusAfter);
                 devApplyService.updateByDevId(devId,statusAfter);
                 model.addAttribute("result", "开发者审核不通过成功！");
                 return "200";
