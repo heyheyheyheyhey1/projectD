@@ -24,6 +24,7 @@ public class UploadFileUtils {
         realFile.createNewFile();
         FileOutputStream fos = new FileOutputStream(tmpFile);
         fos.write(file.getBytes());
+
         fos = new FileOutputStream(realFile);
         fos.write(file.getBytes());
         fos.close();

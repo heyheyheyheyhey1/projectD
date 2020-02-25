@@ -1,6 +1,7 @@
 package com.jhx.projectd.mapper;
 
 import com.jhx.projectd.entity.AppVersion;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,4 +52,6 @@ public interface AppVersionMapper {
     List<HashMap<String,Object>> selectFullInfoByAppId(Integer appId);
 
     List<AppVersion> selectByVersionId(int aid, int vid);
+    List<AppVersion> selectByVersionNo(@Param("aid") int aid, @Param("vno") String vno);
+
 }

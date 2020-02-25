@@ -191,6 +191,7 @@ public class DevController {
         int end=start+pageSize <s.size()?start+pageSize:s.size();
         return s.subList(start,end);
     }
+
     @ResponseBody
     @GetMapping("flatform/app/categorylevellist")
     public List<AppCategory>  catgrlevellist(@RequestParam("pid")Integer pid,HttpServletResponse response){
@@ -303,6 +304,13 @@ public class DevController {
         System.out.println("文件大小"+pageInfo.getA_downloadLink().getSize());
         System.out.println("页面属性"+pageInfo.toString());
         String downloadLink=null;
+        String versionNo=pageInfo.getVersionNo();
+        List<AppVersion> vlist = appVersionService.selectByVersionNo(pageInfo.getAppId(),versionNo);
+
+        if (vlist.size()!=0){
+            model.addAttribute("errorInfo","有这个版本号了");
+            return "403";
+        }
         if (pageInfo.getA_downloadLink().getSize()!=0&&UploadFileUtils.isAPK(pageInfo.getA_downloadLink())){
             downloadLink=UploadFileUtils.saveUploadfile(pageInfo.getA_downloadLink());
         }
@@ -369,6 +377,8 @@ public class DevController {
             map.put("info","没这app或者你不是这个app与开发者不对应");
         }
         appInfoService.deleteByPrimaryKey(id);
+        appVersionService.deleteByAppId(id);
+
         map.put("status","ok");
         map.put("info","");
         return map;

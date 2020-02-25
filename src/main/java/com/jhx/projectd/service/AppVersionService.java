@@ -61,4 +61,10 @@ public class AppVersionService implements AppVersionMapper {
         return appVersionMapper.selectByVersionId(aid,vid);
     }
 
+    @Override
+    public List<AppVersion> selectByVersionNo(int aid, String vno) {
+        return appVersionMapper.selectByVersionNo(aid,vno);
+    }
+
+
 }
